@@ -34,7 +34,7 @@ Clock Clock; //parameterless constructor
 Lcd Lcd(LCD_I2C_ADDRESS, 16, 2);
 
 LedRgb Led(PIN_RGB_RED, PIN_RGB_GREEN, PIN_RGB_BLUE);
-WaterProgram WProgram(&Led);
+WaterProgram WProgram(&Led, &Comms);
 
 //callback declarations
 void onCommunicationStarted(byte packet[], int size);
@@ -82,14 +82,6 @@ void loop(){
 
     Led.update();
     WProgram.update();
-
-    if(Comms.status == CommStatus::Standby){
-        if(millis() % 5000 == 0){
-
-             byte buffer[] = {'H','E','L','L','O'};
-             Comms.sendCommand(buffer,5);
-        }
-    }
 }
 
 void onCommunicationStarted(byte packet[], int size){
@@ -118,12 +110,20 @@ void onKeyUp(int key){
     DPRINTLN_F("onKeyUp(%d)", key);
 
     Lcd.wakeup();
+    switch(key){
+        case Keys::KEY_UP: WProgram.open(); break;
+        case Keys::KEY_DOWN: WProgram.close();break;
+        case Keys::KEY_BACK:WProgram.abort();break;
+        case Keys::KEY_ENTER:WProgram.check(0,0,0);
+    }
 }
 
 void onGetTime(DateTime datetime){
      DPRINTLN_F("onGetTime: %02d-%02d-%02d %02d:%02d:%02d", 
      datetime.year(), datetime.month(), datetime.day(),
      datetime.hour(), datetime.minute(), datetime.second());
+
+    // WProgram.check(datetime.hour(), datetime.minute(), datetime.second());
 }
 
 void onLcdSleep(){

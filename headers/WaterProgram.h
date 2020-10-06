@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 #include "LedRgb.h"
-
+#include "Communications.h"
 
 #define WATER_PROGRAM_STATUS_STANDBY 0
 #define WATER_PROGRAM_SCHEDULED_RUNNING 1
@@ -24,15 +24,26 @@ class WaterProgram{
             {{0,255,255,500},{255,0,0,500}}
         };
 
-        //void run(); //runs the program. Get values, evaluate and open valves if needed; 
+        Communications* Comms;
+        //runs the program. Get values, evaluate and open valves if needed; 
+        void run(); 
+
+        //check if is time to run.
+        bool isTimeToRun(int hours, int minutes, int seconds);
     public:
-        WaterProgram(LedRgb* Led);
+        WaterProgram(LedRgb* Led, Communications* Comms);
 
         void begin();
         void update();
-        void open(); //Open the water
-        void close(); //Closes the water
-        void abort(); //Abort a running execution
+        //Open the water
+        void open(); 
+        //Closes the water
+        void close(); 
+        //Abort a scheduled execution
+        void abort(); 
+
+        // Receive time and check if is time to run
+        void check(int hours, int minutes, int seconds);
 };
 
 #endif

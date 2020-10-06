@@ -3,9 +3,11 @@
 
 #include "headers\WaterProgram.h"
 #include "headers\LedRgb.h"
+#include "headers\Communications.h"
 
-WaterProgram::WaterProgram(LedRgb* Led){
+WaterProgram::WaterProgram(LedRgb* Led, Communications* Comms){
    this->Led = Led;
+   this->Comms = Comms;
 }
 
 void WaterProgram::begin(){
@@ -23,13 +25,53 @@ void WaterProgram::update(){
 }
 
 void WaterProgram::open(){
-    currentStatus = WATER_PROGRAM_MANUAL_RUNNING;
+    DPRINTLN("open");
+    if(Comms->status == CommStatus::Standby){
+        byte buffer[] = {'O','P','E','N'};
+        Comms->sendCommand(buffer,4);
+        currentStatus = WATER_PROGRAM_MANUAL_RUNNING;
+    } 
+    
 }
 
 void WaterProgram::close(){
-    currentStatus = WATER_PROGRAM_STATUS_STANDBY;
+    DPRINTLN("close");
+    if(Comms->status == CommStatus::Standby){
+        byte buffer[] = {'C','L','O','S','E'};
+        Comms->sendCommand(buffer,5);
+        currentStatus = WATER_PROGRAM_STATUS_STANDBY;
+    } 
 }
 
 void WaterProgram::abort(){
-    currentStatus = WATER_PROGRAM_STATUS_STANDBY;
+    DPRINTLN("abort");
+     if(Comms->status == CommStatus::Standby){
+        byte buffer[] = {'A','B','O','R','T'};
+        Comms->sendCommand(buffer,5);
+        currentStatus = WATER_PROGRAM_STATUS_STANDBY;
+    } 
+}
+
+void WaterProgram::check(int hours, int minutes, int seconds){
+    if( (currentStatus != WATER_PROGRAM_SCHEDULED_RUNNING) && 
+        (currentStatus != WATER_PROGRAM_MANUAL_RUNNING) &&
+        isTimeToRun(hours, minutes, seconds)){
+        run();
+    }
+}
+
+/******************* private *********************************/
+
+bool WaterProgram::isTimeToRun(int hours, int minutes, int seconds){
+    DPRINTLN("isTimeToRun");
+    return true;
+}
+
+void WaterProgram::run(){
+    DPRINTLN("run");
+    if(Comms->status == CommStatus::Standby){
+        byte buffer[] = {'R','U','N'};
+        Comms->sendCommand(buffer,3);
+        currentStatus = WATER_PROGRAM_SCHEDULED_RUNNING;
+    }    
 }
