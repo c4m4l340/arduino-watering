@@ -51,11 +51,8 @@ void onGetTime(DateTime datetime);
 
 void setup(){
     DINITSERIAL(9600);
-       
-    Comms.begin(RS485_SPEED);
-    Comms.onCommunicationStarted = onCommunicationStarted;
-    Comms.onCommunicationReceived = onCommunicationReceived;
-    Comms.onCommunicationTimeout = onCommunicationTimeout;
+     
+
     
     Keypad.begin();
     Keypad.onKeyDown = onKeyDown;
@@ -69,6 +66,7 @@ void setup(){
     Lcd.onWakeup = onLcdWakeup;
 
     Led.begin(); 
+    Comms.begin(RS485_SPEED);
     WProgram.begin();
 
 }
@@ -82,24 +80,6 @@ void loop(){
 
     Led.update();
     WProgram.update();
-}
-
-void onCommunicationStarted(byte packet[], int size){
-    byte tmp[size+1];
-    memcpy(tmp, packet, size);
-    tmp[size]=0;
-    DPRINTLN_F("onCommunicationStarted: [%s], %d",tmp,size);
-}
-
-void onCommunicationTimeout(){
-    DPRINTLN("onCommunicationTimeout");
-}
-
-void onCommunicationReceived(byte buffer[], int size){
-     byte tmp[size+1];
-    memcpy(tmp, buffer, size);
-    tmp[size]=0;
-    DPRINTLN_F("onCommunicationReceived: [%s], %d",tmp,size);
 }
 
 void onKeyDown(int key){

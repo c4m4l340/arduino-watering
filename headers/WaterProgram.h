@@ -25,8 +25,13 @@ class WaterProgram{
         };
 
         Communications* Comms;
+        static void onCommunicationStarted(byte packet[], int size);
+        static void onCommunicationTimeout();
+        static void onCommunicationReceived(byte buffer[], int size);
+        
+
         //runs the program. Get values, evaluate and open valves if needed; 
-        void run(); 
+        void runScheduled(); 
 
         //check if is time to run.
         bool isTimeToRun(int hours, int minutes, int seconds);
