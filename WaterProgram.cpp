@@ -21,3 +21,15 @@ void WaterProgram::update(){
         previousStatus = currentStatus;
     }
 }
+
+void WaterProgram::open(){
+    currentStatus = WATER_PROGRAM_MANUAL_RUNNING;
+}
+
+void WaterProgram::close(){
+    currentStatus = WATER_PROGRAM_STATUS_STANDBY;
+}
+
+void WaterProgram::abort(){
+    currentStatus = WATER_PROGRAM_STATUS_STANDBY;
+}

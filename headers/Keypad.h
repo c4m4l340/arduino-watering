@@ -13,8 +13,8 @@
             KEY_NO_KEY = 0,
     };
 
-using KeyDownEventDelegate = void (*)(int key);
-using KeyUpEventDelegate = void (*)(int key);
+using KeyDownCallback = void (*)(int key);
+using KeyUpCallback = void (*)(int key);
 
     class Keypad{
         
@@ -34,8 +34,8 @@ using KeyUpEventDelegate = void (*)(int key);
             unsigned long previousDebounceTime = 0;
             
         public:
-            KeyDownEventDelegate onKeyDown = NULL;
-            KeyUpEventDelegate onKeyUp = NULL;
+            KeyDownCallback onKeyDown = NULL;
+            KeyUpCallback onKeyUp = NULL;
 
             Keypad(int pin);
             void begin();

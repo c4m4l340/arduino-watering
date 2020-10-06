@@ -9,8 +9,8 @@
 
 #define LCD_LIGHT_TIMEOUT 10000
 
-using SleepEventDelegate = void (*)();
-using WakeupEventDelegate = void (*)();
+using SleepCallback = void (*)();
+using WakeupCallback = void (*)();
 
 class Lcd{
     private:
@@ -24,8 +24,8 @@ class Lcd{
         void off();
 
     public:
-        SleepEventDelegate onSleep = NULL;
-        WakeupEventDelegate onWakeup = NULL;
+        SleepCallback onSleep = NULL;
+        WakeupCallback onWakeup = NULL;
 
         Lcd(uint8_t address, uint8_t cols, uint8_t rows);
         void begin();

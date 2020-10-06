@@ -4,7 +4,7 @@
 #include <Wire.h>
 #include <DS3231.h>
 
-using TimeGetEvent = void (*)(DateTime datetime);
+using TimeCheckedCallback = void (*)(DateTime datetime);
 
 class Clock{
 
@@ -15,7 +15,7 @@ class Clock{
         unsigned long previousTime = 0;
 
     public:
-        TimeGetEvent onGetTime = NULL;
+        TimeCheckedCallback onGetTime = NULL;
 
         Clock();
         void begin();

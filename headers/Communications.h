@@ -13,9 +13,9 @@ enum CommStatus: byte
     WaitResponse = 0x01    
 };
 
-using CommunicationStartedEventDelegate = void (*)(byte buffer[], int size);
-using CommunicationReceivedEventDelegate = void (*)(byte buffer[], int size);
-using CommunicationTimeoutEventDelegate = void (*)();
+using CommunicationStartedCallback = void (*)(byte buffer[], int size);
+using CommunicationReceivedCallback = void (*)(byte buffer[], int size);
+using CommunicationTimeoutCallback = void (*)();
 
 class Communications{
 
@@ -36,9 +36,9 @@ class Communications{
         
     public:
         CommStatus status = CommStatus::Standby;
-        CommunicationStartedEventDelegate onCommunicationStarted = NULL;
-        CommunicationReceivedEventDelegate onCommunicationReceived = NULL;
-        CommunicationTimeoutEventDelegate onCommunicationTimeout = NULL;
+        CommunicationStartedCallback onCommunicationStarted = NULL;
+        CommunicationReceivedCallback onCommunicationReceived = NULL;
+        CommunicationTimeoutCallback onCommunicationTimeout = NULL;
         
         Communications(int8_t receivePin, int8_t transmitPin, int8_t ctrlPin);
         void begin(long commSpeed);

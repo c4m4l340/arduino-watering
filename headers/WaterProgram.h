@@ -30,9 +30,9 @@ class WaterProgram{
 
         void begin();
         void update();
-        //void open(); //Open the water
-        //void close(); //Closes the water
-        //void abort(); //Abort a running execution
+        void open(); //Open the water
+        void close(); //Closes the water
+        void abort(); //Abort a running execution
 };
 
 #endif
