@@ -5,7 +5,7 @@ With this I intent to join programming with electronics, remember c++, and lear 
 
 Problems:
  - To cover a so long distance, 3 arduinos will be used. One master, and two slaves with two moisture sensors each and an electro valve each.
- - The communications will be RD485 as is the most reliable serial comminication to cover such distances.
+ - The communications will be RS485 as is the most reliable serial comminication to cover such distances.
  
 Spec:
 - Should have 4 sensors to monitor the moisture on soil.
