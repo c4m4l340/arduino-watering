@@ -44,7 +44,6 @@ void Communications::update()
     }
 }
 
-
 bool Communications::sendCommand(byte packet[], int size)
 {    
     //DPRINTLN_F("Communications::sendCommand([%s], %d)", packet, size);
@@ -67,7 +66,7 @@ bool Communications::sendCommand(byte packet[], int size)
 void Communications::setCommunicationTimeout()
 {
     if(onCommunicationTimeout != NULL){
-        onCommunicationTimeout();
+        onCommunicationTimeout(callbackInstance);
     }
     status = CommStatus::Standby;
 }

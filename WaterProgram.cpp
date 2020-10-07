@@ -17,7 +17,8 @@ void WaterProgram::begin(){
     Led->setColorGroup(blinkGroups[currentStatus]);
     Comms->onCommunicationStarted = onCommunicationStarted;
     Comms->onCommunicationReceived = onCommunicationReceived;
-    Comms->onCommunicationTimeout = onCommunicationTimeout;    
+    Comms->onCommunicationTimeout = onCommunicationTimeout;
+    Comms->callbackInstance = this;    
     
     //DPRINTLN_F("Led2: %p, %p, %p, %p",&Led, Led, &aLed, aLed);
 }
@@ -88,8 +89,12 @@ void WaterProgram::onCommunicationStarted(byte packet[], int size){
     DPRINTLN_F("onCommunicationStarted: [%s], %d",tmp,size);
 }
 
-void WaterProgram::onCommunicationTimeout(){
+void WaterProgram::onCommunicationTimeout(void* this_ptr){
     DPRINTLN("onCommunicationTimeout");
+
+    WaterProgram* me = reinterpret_cast<WaterProgram*>(this_ptr);
+    me->currentStatus = WATER_PROGRAM_STATUS_STANDBY;
+    
 }
 
 void WaterProgram::onCommunicationReceived(byte buffer[], int size){

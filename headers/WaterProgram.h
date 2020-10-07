@@ -26,9 +26,10 @@ class WaterProgram{
 
         Communications* Comms;
         static void onCommunicationStarted(byte packet[], int size);
-        static void onCommunicationTimeout();
+        static void onCommunicationTimeout(void* this_ptr);
         static void onCommunicationReceived(byte buffer[], int size);
         
+        void onCommunicationTimeoutCallback(void* this_ptr);
 
         //runs the program. Get values, evaluate and open valves if needed; 
         void runScheduled(); 

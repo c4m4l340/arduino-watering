@@ -15,11 +15,13 @@ enum CommStatus: byte
 
 using CommunicationStartedCallback = void (*)(byte buffer[], int size);
 using CommunicationReceivedCallback = void (*)(byte buffer[], int size);
-using CommunicationTimeoutCallback = void (*)();
+using CommunicationTimeoutCallback = void (*)(void* this_ptr);
 
 class Communications{
 
     private:
+    
+        
         SoftwareSerial serialPort;
         
         int8_t rxTxCtrlPin;
@@ -39,7 +41,8 @@ class Communications{
         CommunicationStartedCallback onCommunicationStarted = NULL;
         CommunicationReceivedCallback onCommunicationReceived = NULL;
         CommunicationTimeoutCallback onCommunicationTimeout = NULL;
-        
+        void* callbackInstance = NULL;
+
         Communications(int8_t receivePin, int8_t transmitPin, int8_t ctrlPin);
         void begin(long commSpeed);
         void update();   
