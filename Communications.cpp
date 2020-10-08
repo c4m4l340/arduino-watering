@@ -58,7 +58,7 @@ bool Communications::sendCommand(byte packet[], int size)
     startCommunicationTime = millis();
 
     if(onCommunicationStarted != NULL){
-        onCommunicationStarted(packet, size);
+        onCommunicationStarted(packet, size, callbackCallerInstance);
     }
 }
 
@@ -66,7 +66,7 @@ bool Communications::sendCommand(byte packet[], int size)
 void Communications::setCommunicationTimeout()
 {
     if(onCommunicationTimeout != NULL){
-        onCommunicationTimeout(callbackInstance);
+        onCommunicationTimeout(callbackCallerInstance);
     }
     status = CommStatus::Standby;
 }
@@ -74,7 +74,7 @@ void Communications::setCommunicationTimeout()
 void Communications::setCommunicationReceived()
 {
     if(onCommunicationReceived != NULL){
-        onCommunicationReceived(responseBuffer, responseBufferSize);
+        onCommunicationReceived(responseBuffer, responseBufferSize, callbackCallerInstance);
     }
     status = CommStatus::Standby;
 }

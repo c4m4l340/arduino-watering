@@ -18,7 +18,7 @@ void WaterProgram::begin(){
     Comms->onCommunicationStarted = onCommunicationStarted;
     Comms->onCommunicationReceived = onCommunicationReceived;
     Comms->onCommunicationTimeout = onCommunicationTimeout;
-    Comms->callbackInstance = this;    
+    Comms->callbackCallerInstance = this;    
     
     //DPRINTLN_F("Led2: %p, %p, %p, %p",&Led, Led, &aLed, aLed);
 }

@@ -13,9 +13,9 @@ enum CommStatus: byte
     WaitResponse = 0x01    
 };
 
-using CommunicationStartedCallback = void (*)(byte buffer[], int size);
-using CommunicationReceivedCallback = void (*)(byte buffer[], int size);
-using CommunicationTimeoutCallback = void (*)(void* this_ptr);
+using CommunicationStartedCallback = void (*)(byte buffer[], int size, void* caller_ptr);
+using CommunicationReceivedCallback = void (*)(byte buffer[], int size, void* caller_ptr);
+using CommunicationTimeoutCallback = void (*)(void* caller_ptr);
 
 class Communications{
 
@@ -41,7 +41,7 @@ class Communications{
         CommunicationStartedCallback onCommunicationStarted = NULL;
         CommunicationReceivedCallback onCommunicationReceived = NULL;
         CommunicationTimeoutCallback onCommunicationTimeout = NULL;
-        void* callbackInstance = NULL;
+        void* callbackCallerInstance = NULL;
 
         Communications(int8_t receivePin, int8_t transmitPin, int8_t ctrlPin);
         void begin(long commSpeed);
