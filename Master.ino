@@ -39,7 +39,7 @@ WaterProgram WProgram(&Led, &Comms);
 
 Keypad Keypad(KEYPAD_PIN);
 Lcd Lcd(LCD_I2C_ADDRESS, 16, 2);
-UserInterface UserInterface(&Lcd, &Keypad);
+UserInterface UserInterface(&Lcd, &Keypad, &WProgram);
 
 //callback declarations
 void onGetTime(DateTime datetime, void* caller_ptr);

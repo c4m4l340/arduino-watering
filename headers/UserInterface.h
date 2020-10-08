@@ -3,6 +3,7 @@
 
 #include "Lcd.h"
 #include "Keypad.h"
+#include "WaterProgram.h"
 
 #define USER_INTERFACE_STATUS_OFF 0
 #define USER_INTERFACE_STANDBY 1
@@ -18,8 +19,10 @@ class UserInterface{
         static void onKeyUp(int key, void* caller_ptr);
         static void onKeyDown(int key, void* caller_ptr);
 
+        WaterProgram* waterProg;
+
     public:
-        UserInterface(Lcd* lcd, Keypad* keypad);
+        UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram);
         void begin();
         void update();
 };

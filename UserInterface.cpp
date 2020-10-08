@@ -5,19 +5,20 @@
 #include "headers\Lcd.h"
 #include "headers\Keypad.h"
 
-UserInterface::UserInterface(Lcd* lcd, Keypad* keypad){
+UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram){
     this->lcd = lcd;
     this->keypad = keypad;
+    this->waterProg = waterProgram;
 }
 
 void UserInterface::begin(){
     keypad->onKeyUp = onKeyUp;
     keypad->onKeyDown = onKeyDown;
-    keypad->callerCallbackInstance = nullptr;
+    keypad->callerCallbackInstance = this;
 
     lcd->onSleep = onLcdSleep;
     lcd->onWakeup = onLcdWakeup;
-    lcd->callerCallbackInstance = nullptr;
+    lcd->callerCallbackInstance = this;
 }
 
 void UserInterface::update(){
@@ -29,13 +30,13 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
     DPRINTLN_F("onKeyUp(%d)", key);
 
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
-    //me->lcd->wakeup();
-    // switch(key){
-    //     case Keys::KEY_UP: WProgram->open(); break;
-    //     case Keys::KEY_DOWN: WProgram->close();break;
-    //     case Keys::KEY_BACK: WProgram->abort();break;
-    //     case Keys::KEY_ENTER: WProgram->check(0,0,0);
-    // }
+    me->lcd->wakeup();
+    switch(key){
+        case Keys::KEY_UP: me->waterProg->open(); break;
+        case Keys::KEY_DOWN: me->waterProg->close();break;
+        case Keys::KEY_BACK: me->waterProg->abort();break;
+        case Keys::KEY_ENTER: me->waterProg->check(0,0,0);
+    }
 }
 
 void UserInterface::onKeyDown(int key, void* caller_ptr){
