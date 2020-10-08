@@ -16,7 +16,7 @@ void Clock::update(){
         previousTime = currentTime;
         DateTime time = rtc.now();
         if(onGetTime != NULL){
-            onGetTime(time);
+            onGetTime(time, callerCallbackInstance);
         }
     }
 }

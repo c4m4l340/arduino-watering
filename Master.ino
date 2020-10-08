@@ -37,12 +37,9 @@ LedRgb Led(PIN_RGB_RED, PIN_RGB_GREEN, PIN_RGB_BLUE);
 WaterProgram WProgram(&Led, &Comms);
 
 //callback declarations
-void onCommunicationStarted(byte packet[], int size);
-void onCommunicationReceived(byte buffer[], int size);
-void onCommunicationTimeout();
-void onKeyDown(int key);
-void onKeyUp(int key);
-void onGetTime(DateTime datetime);
+void onKeyDown(int key, void* caller_ptr);
+void onKeyUp(int key, void* caller_ptr);
+void onGetTime(DateTime datetime, void* caller_ptr);
 
 
 //ProgramStatus = Standby, ManualRunning, ScheduledRunning
@@ -51,19 +48,20 @@ void onGetTime(DateTime datetime);
 
 void setup(){
     DINITSERIAL(9600);
-     
-
-    
+         
     Keypad.begin();
     Keypad.onKeyDown = onKeyDown;
     Keypad.onKeyUp = onKeyUp;
+    Keypad.callerCallbackInstance = nullptr;
 
     Clock.begin();
     Clock.onGetTime = onGetTime;
+    Clock.callerCallbackInstance = nullptr;
 
     Lcd.begin();
     Lcd.onSleep = onLcdSleep;
     Lcd.onWakeup = onLcdWakeup;
+    Lcd.callerCallbackInstance = nullptr;
 
     Led.begin(); 
     Comms.begin(RS485_SPEED);
@@ -82,11 +80,11 @@ void loop(){
     WProgram.update();
 }
 
-void onKeyDown(int key){
+void onKeyDown(int key, void* caller_ptr){
     DPRINTLN_F("onKeyDown(%d)", key);
 }
 
-void onKeyUp(int key){
+void onKeyUp(int key, void* caller_ptr){
     DPRINTLN_F("onKeyUp(%d)", key);
 
     Lcd.wakeup();
@@ -98,7 +96,7 @@ void onKeyUp(int key){
     }
 }
 
-void onGetTime(DateTime datetime){
+void onGetTime(DateTime datetime, void* caller_ptr){
      DPRINTLN_F("onGetTime: %02d-%02d-%02d %02d:%02d:%02d", 
      datetime.year(), datetime.month(), datetime.day(),
      datetime.hour(), datetime.minute(), datetime.second());
@@ -106,10 +104,10 @@ void onGetTime(DateTime datetime){
     // WProgram.check(datetime.hour(), datetime.minute(), datetime.second());
 }
 
-void onLcdSleep(){
+void onLcdSleep(void* caller_ptr){
         DPRINTLN("onLcdSleep");
 }
 
-void onLcdWakeup(){
+void onLcdWakeup(void* caller_ptr){
     DPRINTLN("onLcdWakeup");
 }

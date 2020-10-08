@@ -4,7 +4,7 @@
 #include <Wire.h>
 #include <DS3231.h>
 
-using TimeCheckedCallback = void (*)(DateTime datetime);
+using TimeCheckedCallback = void (*)(DateTime datetime, void* caller_ptr);
 
 class Clock{
 
@@ -16,7 +16,7 @@ class Clock{
 
     public:
         TimeCheckedCallback onGetTime = NULL;
-
+        void* callerCallbackInstance = NULL;
         Clock();
         void begin();
         void update();
