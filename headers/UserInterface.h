@@ -11,6 +11,9 @@
 
 class UserInterface{
     private:
+        byte currentStatus = USER_INTERFACE_STATUS_OFF;
+        byte previousStatus = USER_INTERFACE_STATUS_OFF;
+
         Lcd* lcd;
         static void onLcdSleep(void* caller_ptr);
         static void onLcdWakeup(void* caller_ptr);
@@ -21,10 +24,14 @@ class UserInterface{
 
         WaterProgram* waterProg;
 
+        void showIdleScreen(int hours, int minutes, int seconds);
+
     public:
         UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram);
         void begin();
         void update();
+
+        void pushTime(int hours, int minutes, int seconds);
 };
 
 #endif

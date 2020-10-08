@@ -33,6 +33,8 @@ class Lcd{
         void update();
 
         void wakeup();
+
+        void writeLn(byte row, byte col, char* line);
 };
 
 #endif

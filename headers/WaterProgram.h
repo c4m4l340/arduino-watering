@@ -48,7 +48,7 @@ class WaterProgram{
         void abort(); 
 
         // Receive time and check if is time to run
-        void check(int hours, int minutes, int seconds);
+        void pushTime(int hours, int minutes, int seconds);
 };
 
 #endif

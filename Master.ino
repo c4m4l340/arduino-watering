@@ -82,6 +82,7 @@ void onGetTime(DateTime datetime, void* caller_ptr){
      datetime.year(), datetime.month(), datetime.day(),
      datetime.hour(), datetime.minute(), datetime.second());
 
-    // WProgram.check(datetime.hour(), datetime.minute(), datetime.second());
+    WProgram.pushTime(datetime.hour(), datetime.minute(), datetime.second());
+    UserInterface.pushTime(datetime.hour(), datetime.minute(), datetime.second());
 }
 

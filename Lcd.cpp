@@ -7,6 +7,7 @@ Lcd::Lcd(uint8_t address, uint8_t cols, uint8_t rows) : lcd(address, cols, rows,
 {
 }
 
+#pragma region Task setup and run
 void Lcd::begin()
 {
     Wire.begin();
@@ -28,7 +29,9 @@ void Lcd::update()
     }
 
 }
+#pragma endregion
 
+#pragma region Actions
 void Lcd::wakeup(){
    this->on();
    timerLightOn = millis();
@@ -37,7 +40,15 @@ void Lcd::wakeup(){
    }
 }
 
+void Lcd::writeLn(byte row, byte col, char* line){
+        DPRINTLN_F("Lcd::writeLn(byte row, byte col, char* line)");
+        lcd.setCursor(col, row);
+        lcd.print(line);
+}
 
+#pragma endregion
+
+#pragma region Private
 void Lcd::off(){
      lcd.noBacklight(); 
      isAwake=false;
@@ -50,6 +61,9 @@ void Lcd::on(){
  lcd.backlight(); 
  isAwake=true;
 }
+
+#pragma endregion
+
 
 // void Lcd::showTimeAndDate(int col, int row)
 // {

@@ -1,4 +1,3 @@
-#define DEBUG
 #include "headers\SerialDebug.h"
 
 #include "headers\WaterProgram.h"
@@ -10,6 +9,7 @@ WaterProgram::WaterProgram(LedRgb* led, Communications* comms){
    this->comms = comms;
 }
 
+#pragma region Task setup and run
 void WaterProgram::begin(){
     previousStatus = WATER_PROGRAM_STATUS_STANDBY;
     currentStatus =  WATER_PROGRAM_STATUS_STANDBY;
@@ -29,6 +29,9 @@ void WaterProgram::update(){
         previousStatus = currentStatus;
     }
 }
+#pragma endregion
+
+#pragma region Actions
 
 void WaterProgram::open(){
     DPRINTLN("open");
@@ -58,19 +61,22 @@ void WaterProgram::abort(){
     } 
 }
 
-void WaterProgram::check(int hours, int minutes, int seconds){
+void WaterProgram::pushTime(int hours, int minutes, int seconds){
+     DPRINTLN_F("WaterProgram::pushTime(%d,%d,%d)", hours, minutes, seconds);
+
     if( (currentStatus != WATER_PROGRAM_SCHEDULED_RUNNING) && 
         (currentStatus != WATER_PROGRAM_MANUAL_RUNNING) &&
         isTimeToRun(hours, minutes, seconds)){
         runScheduled();
     }
 }
+#pragma endregion
 
-/******************* private *********************************/
+#pragma region Private
 
 bool WaterProgram::isTimeToRun(int hours, int minutes, int seconds){
-    DPRINTLN("isTimeToRun");
-    return true;
+    DPRINTLN("isTimeToRun: return FALSE!!!!!!!");
+    return false;
 }
 
 void WaterProgram::runScheduled(){
@@ -82,6 +88,9 @@ void WaterProgram::runScheduled(){
     }    
 }
 
+#pragma endregion
+
+#pragma region Callbacks
 void WaterProgram::onCommunicationStarted(byte packet[], int size, void* this_ptr){
     byte tmp[size+1];
     memcpy(tmp, packet, size);
@@ -103,3 +112,4 @@ void WaterProgram::onCommunicationReceived(byte buffer[], int size, void* this_p
     tmp[size]=0;
     DPRINTLN_F("onCommunicationReceived: [%s], %d",tmp,size);
 }
+#pragma endregion
