@@ -33,7 +33,7 @@ void Lcd::wakeup(){
    this->on();
    timerLightOn = millis();
    if(onWakeup != NULL){
-       onWakeup();
+       onWakeup(callerCallbackInstance);
    }
 }
 
@@ -42,7 +42,7 @@ void Lcd::off(){
      lcd.noBacklight(); 
      isAwake=false;
      if(onSleep != NULL){
-         onSleep();
+         onSleep(callerCallbackInstance);
      }
 }
 

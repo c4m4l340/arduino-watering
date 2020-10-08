@@ -50,12 +50,12 @@ void Keypad::update()
             if(lastPressedKey != detectedKey){
                 if(lastPressedKey == KEY_NO_KEY){
                     if(onKeyDown != NULL){
-                        onKeyDown(detectedKey);
+                        onKeyDown(detectedKey, callerCallbackInstance);
                     }
                 }
                 else if(detectedKey == KEY_NO_KEY){
                     if(onKeyUp != NULL){
-                        onKeyUp(lastPressedKey);
+                        onKeyUp(lastPressedKey, callerCallbackInstance);
                     }
                 }
                 lastPressedKey = detectedKey;                

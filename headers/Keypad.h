@@ -13,8 +13,8 @@
             KEY_NO_KEY = 0,
     };
 
-using KeyDownCallback = void (*)(int key);
-using KeyUpCallback = void (*)(int key);
+using KeyDownCallback = void (*)(int key, void* caller_ptr);
+using KeyUpCallback = void (*)(int key, void* caller_ptr);
 
     class Keypad{
         
@@ -36,7 +36,8 @@ using KeyUpCallback = void (*)(int key);
         public:
             KeyDownCallback onKeyDown = NULL;
             KeyUpCallback onKeyUp = NULL;
-
+            void* callerCallbackInstance = NULL;
+            
             Keypad(int pin);
             void begin();
             void update();
