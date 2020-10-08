@@ -82,7 +82,7 @@ void WaterProgram::runScheduled(){
     }    
 }
 
-void WaterProgram::onCommunicationStarted(byte packet[], int size){
+void WaterProgram::onCommunicationStarted(byte packet[], int size, void* this_ptr){
     byte tmp[size+1];
     memcpy(tmp, packet, size);
     tmp[size]=0;
@@ -92,12 +92,12 @@ void WaterProgram::onCommunicationStarted(byte packet[], int size){
 void WaterProgram::onCommunicationTimeout(void* this_ptr){
     DPRINTLN("onCommunicationTimeout");
 
-    WaterProgram* me = reinterpret_cast<WaterProgram*>(this_ptr);
+    WaterProgram* me = static_cast<WaterProgram*>(this_ptr);
     me->currentStatus = WATER_PROGRAM_STATUS_STANDBY;
     
 }
 
-void WaterProgram::onCommunicationReceived(byte buffer[], int size){
+void WaterProgram::onCommunicationReceived(byte buffer[], int size, void* this_ptr){
      byte tmp[size+1];
     memcpy(tmp, buffer, size);
     tmp[size]=0;
