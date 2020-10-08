@@ -5,36 +5,36 @@
 #include "headers\LedRgb.h"
 #include "headers\Communications.h"
 
-WaterProgram::WaterProgram(LedRgb* Led, Communications* Comms){
-   this->Led = Led;
-   this->Comms = Comms;
+WaterProgram::WaterProgram(LedRgb* led, Communications* comms){
+   this->led = led;
+   this->comms = comms;
 }
 
 void WaterProgram::begin(){
     previousStatus = WATER_PROGRAM_STATUS_STANDBY;
     currentStatus =  WATER_PROGRAM_STATUS_STANDBY;
 
-    Led->setColorGroup(blinkGroups[currentStatus]);
-    Comms->onCommunicationStarted = onCommunicationStarted;
-    Comms->onCommunicationReceived = onCommunicationReceived;
-    Comms->onCommunicationTimeout = onCommunicationTimeout;
-    Comms->callbackCallerInstance = this;    
+    led->setColorGroup(blinkGroups[currentStatus]);
+    comms->onCommunicationStarted = onCommunicationStarted;
+    comms->onCommunicationReceived = onCommunicationReceived;
+    comms->onCommunicationTimeout = onCommunicationTimeout;
+    comms->callbackCallerInstance = this;    
     
     //DPRINTLN_F("Led2: %p, %p, %p, %p",&Led, Led, &aLed, aLed);
 }
 
 void WaterProgram::update(){
     if(previousStatus != currentStatus){
-        Led->setColorGroup(blinkGroups[currentStatus]);
+        led->setColorGroup(blinkGroups[currentStatus]);
         previousStatus = currentStatus;
     }
 }
 
 void WaterProgram::open(){
     DPRINTLN("open");
-    if(Comms->status == CommStatus::Standby){
+    if(comms->status == CommStatus::Standby){
         byte buffer[] = {'O','P','E','N'};
-        Comms->sendCommand(buffer,4);
+        comms->sendCommand(buffer,4);
         currentStatus = WATER_PROGRAM_MANUAL_RUNNING;
     } 
     
@@ -42,18 +42,18 @@ void WaterProgram::open(){
 
 void WaterProgram::close(){
     DPRINTLN("close");
-    if(Comms->status == CommStatus::Standby){
+    if(comms->status == CommStatus::Standby){
         byte buffer[] = {'C','L','O','S','E'};
-        Comms->sendCommand(buffer,5);
+        comms->sendCommand(buffer,5);
         currentStatus = WATER_PROGRAM_STATUS_STANDBY;
     } 
 }
 
 void WaterProgram::abort(){
     DPRINTLN("abort");
-     if(Comms->status == CommStatus::Standby){
+     if(comms->status == CommStatus::Standby){
         byte buffer[] = {'A','B','O','R','T'};
-        Comms->sendCommand(buffer,5);
+        comms->sendCommand(buffer,5);
         currentStatus = WATER_PROGRAM_STATUS_STANDBY;
     } 
 }
@@ -75,9 +75,9 @@ bool WaterProgram::isTimeToRun(int hours, int minutes, int seconds){
 
 void WaterProgram::runScheduled(){
     DPRINTLN("runScheduled");
-    if(Comms->status == CommStatus::Standby){
+    if(comms->status == CommStatus::Standby){
         byte buffer[] = {'R','U','N'};
-        Comms->sendCommand(buffer,3);
+        comms->sendCommand(buffer,3);
         currentStatus = WATER_PROGRAM_SCHEDULED_RUNNING;
     }    
 }

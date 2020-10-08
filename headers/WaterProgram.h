@@ -17,14 +17,14 @@ class WaterProgram{
         byte previousStatus = WATER_PROGRAM_STATUS_STANDBY;
         byte currentStatus =  WATER_PROGRAM_STATUS_STANDBY;
 
-        LedRgb* Led;
+        LedRgb* led;
         BlinkGroup blinkGroups[3] ={
             {{0,255,0,75},{0,0,0,2000}},
             {{0,0,255,500},{255,255,0,500}},
             {{0,255,255,500},{255,0,0,500}}
         };
 
-        Communications* Comms;
+        Communications* comms;
         static void onCommunicationStarted(byte packet[], int size, void* this_ptr);
         static void onCommunicationTimeout(void* this_ptr);
         static void onCommunicationReceived(byte buffer[], int size, void* this_ptr);
@@ -36,7 +36,7 @@ class WaterProgram{
         //check if is time to run.
         bool isTimeToRun(int hours, int minutes, int seconds);
     public:
-        WaterProgram(LedRgb* Led, Communications* Comms);
+        WaterProgram(LedRgb* led, Communications* comms);
 
         void begin();
         void update();
