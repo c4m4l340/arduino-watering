@@ -4,6 +4,7 @@
 #include "Lcd.h"
 #include "Keypad.h"
 #include "WaterProgram.h"
+#include "Menu.h"
 
 #define USER_INTERFACE_STATUS_OFF 0
 #define USER_INTERFACE_STATUS_STANDBY 1
@@ -12,7 +13,7 @@
 class UserInterface{
     private:
         byte currentStatus = USER_INTERFACE_STATUS_OFF;
-        //byte previousStatus = USER_INTERFACE_STATUS_OFF;
+        byte previousStatus = USER_INTERFACE_STATUS_OFF;
 
         Keys pressedKey = Keys::KEY_NO_KEY;
 
@@ -26,9 +27,16 @@ class UserInterface{
 
         WaterProgram* waterProg;
 
+        Menu* menu;
+        MenuItem* currentMenuItem = NULL;
+        MenuItem* previousMenuItem = NULL;
+
+        void buildMenu();
+
         void showIdleScreen(int hours, int minutes, int seconds);
         void processMenu(Keys pressedKey);
 
+        
     public:
         UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram);
         void begin();

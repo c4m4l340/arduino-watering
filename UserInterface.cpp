@@ -10,6 +10,7 @@ UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgra
     this->lcd = lcd;
     this->keypad = keypad;
     this->waterProg = waterProgram;
+    
 }
 
 #pragma region Task setup and run
@@ -23,6 +24,8 @@ void UserInterface::begin(){
     lcd->onSleep = onLcdSleep;
     lcd->onWakeup = onLcdWakeup;
     lcd->callerCallbackInstance = this;
+
+    this->buildMenu();    
 }
 
 void UserInterface::update(){
@@ -71,7 +74,8 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
         }  
         case USER_INTERFACE_STATUS_STANDBY:{
                 if(key == Keys::KEY_ENTER){
-                    me->processMenu(Keys::KEY_NO_KEY);
+                    me->processMenu(Keys::KEY_BACK); //reset
+                    me->currentStatus = USER_INTERFACE_STATUS_USING_MENU;
                 }
             break;
         } 
@@ -80,15 +84,6 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
             break;
         }
     }
-
-
-    
-    // switch(key){
-    //     case Keys::KEY_UP: me->waterProg->open(); break;
-    //     case Keys::KEY_DOWN: me->waterProg->close();break;
-    //     case Keys::KEY_BACK: me->waterProg->abort();break;
-    //     case Keys::KEY_ENTER: me->waterProg->pushTime(0,0,0);
-    // }
 }
 
 void UserInterface::onKeyDown(int key, void* caller_ptr){
@@ -123,10 +118,32 @@ void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
 }
 
 void UserInterface::processMenu(Keys pressedKey){
-    if(pressedKey == Keys::KEY_NO_KEY){
-        //Open root
-    } else {
-        
-    }
+        switch (pressedKey)
+        {
+            case Keys::KEY_ENTER:
+                menu->enter();
+                break;
+            case Keys::KEY_BACK:
+                menu->reset();
+            case Keys::KEY_UP:
+                menu->moveNext();
+                break;
+            case Keys::KEY_DOWN:
+                menu->movePrevious();
+        };
+    this->currentMenuItem = &(this->menu->getCurrentItem());
 }
+
+void UserInterface::buildMenu(){
+
+    MenuItem root[] = {
+        {NULL,"Run",0,NULL},
+        {NULL, "Stop",0,NULL},
+        {NULL, "Date/Time",0,NULL},
+        {NULL, "Programs",0,NULL}
+    };
+    
+    this->menu->setRoot(root[0]);
+}
+
 #pragma endregion
