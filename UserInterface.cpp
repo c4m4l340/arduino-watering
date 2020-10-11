@@ -122,8 +122,8 @@ void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
 void UserInterface::showMenuScreen(MenuItem item){
     DPRINTLN_F("UserInterface::showMenuScreen{%d,%s}:currentStatus=%d", item.title.c_str(), this->currentStatus);
     
-    char line[16+1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    lcd->writeLn(1,0,line); -> not working
+    char line[16+1] = {20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20};
+    lcd->writeLn(1,0,line);
 
     snprintf(line,17,"%s",item.title.c_str());
     lcd->writeLn(0,0,line);
