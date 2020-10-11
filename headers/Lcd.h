@@ -6,6 +6,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <WString.h>
 
 #define LCD_LIGHT_TIMEOUT 10000
 
@@ -34,7 +35,8 @@ class Lcd{
 
         void wakeup();
 
-        void writeLn(byte row, byte col, char* line);
+        void writeLn(byte row, byte col, char line[]);
+        void clear();
 };
 
 #endif

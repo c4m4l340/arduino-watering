@@ -2,6 +2,8 @@
 #include "headers\Lcd.h"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <WString.h>
+
 
 Lcd::Lcd(uint8_t address, uint8_t cols, uint8_t rows) : lcd(address, cols, rows, LCD_5x8DOTS)
 {
@@ -15,7 +17,6 @@ void Lcd::begin()
 	lcd.clear();
 	this->off();
 }
-
 void Lcd::update()
 {
     unsigned long currentTime = millis();
@@ -40,11 +41,16 @@ void Lcd::wakeup(){
    }
 }
 
-void Lcd::writeLn(byte row, byte col, char* line){
-        DPRINTLN_F("Lcd::writeLn(byte row, byte col, char* line)");
+void Lcd::writeLn(byte row, byte col, char line[]){
+        DPRINTLN_F("Lcd::writeLn(%d, %d, %s)", row,col ,line);
         lcd.setCursor(col, row);
         lcd.print(line);
 }
+
+void Lcd::clear(){
+    lcd.clear();
+}
+
 
 #pragma endregion
 

@@ -4,6 +4,7 @@
 #include "headers\UserInterface.h"
 #include "headers\Lcd.h"
 #include "headers\Keypad.h"
+#include <WString.h>
 
 UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram){
     this->lcd = lcd;
@@ -25,6 +26,20 @@ void UserInterface::begin(){
 }
 
 void UserInterface::update(){
+    
+    switch (this->currentStatus)
+    {
+        case USER_INTERFACE_STATUS_OFF:{
+            
+            break;
+        }
+        case USER_INTERFACE_USING_MENU:{
+            break;
+        }
+        case USER_INTERFACE_STANDBY:{
+            break;
+        }
+    }
 
 }
 #pragma endregion
@@ -63,6 +78,8 @@ void UserInterface::onLcdSleep(void* caller_ptr){
         UserInterface* me = static_cast<UserInterface*>(caller_ptr);
         me->currentStatus = USER_INTERFACE_STATUS_OFF;
         DPRINTLN_F("UserInterface::onLcdSleep:currentStatus=%d",me->currentStatus);
+        
+        me->lcd->clear();
 }
 
 void UserInterface::onLcdWakeup(void* caller_ptr){
@@ -77,9 +94,11 @@ void UserInterface::onLcdWakeup(void* caller_ptr){
 #pragma region Private
 
 void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
-    DPRINTLN_F("UserInterface::showIdleScreen(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);
-    char* line;
+    DPRINTLN_F("UserInterface::showIdleScreen(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);    
+    
+    char line[8+1];
     sprintf(line, "%02d:%02d:%02d", hours, minutes, seconds);
+
     lcd->writeLn(1,8,line);
 }
 #pragma endregion
