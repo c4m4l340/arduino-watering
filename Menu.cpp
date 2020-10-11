@@ -1,11 +1,16 @@
 #include "headers\Menu.h"
-#include "headers\MenuItemsSetup.h"
 
-Menu::Menu() {
-	this->rootItem = itemsRoot;
-	this->rootItemsCount = sizeof(itemsRoot) / sizeof(MenuItem);
+
+Menu::Menu(MenuItem* root) {
+	this->rootItem = root;
+	this->rootItemsCount = sizeof(root) / sizeof(MenuItem);
+	
+}
+
+void Menu::begin(){
 	this->reset();
 }
+
 
 MenuItem Menu::getCurrentItem(){
 	return *currentItem;
@@ -43,9 +48,4 @@ bool Menu::hasSubItems() {
 
 bool Menu::isRootItem() {
 	return currentItem == rootItem;
-}
-
-void Menu::setRoot(MenuItem root){
-    this->rootItem = &root;
-    this->rootItemsCount = sizeof(root) / sizeof(MenuItem);
 }

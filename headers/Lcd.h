@@ -34,6 +34,7 @@ class Lcd{
         void update();
 
         void wakeup();
+        void resetLightOnTimeout();
 
         void writeLn(byte row, byte col, char line[]);
         void clear();

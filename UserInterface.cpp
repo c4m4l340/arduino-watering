@@ -6,10 +6,11 @@
 #include "headers\Keypad.h"
 #include <WString.h>
 
-UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram){
+UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram, Menu* menu){
     this->lcd = lcd;
     this->keypad = keypad;
     this->waterProg = waterProgram;
+    this->menu = menu;
     
 }
 
@@ -51,7 +52,7 @@ void UserInterface::update(){
 #pragma region Actions
 
 void UserInterface::pushTime(int hours, int minutes, int seconds){
-     DPRINTLN_F("UserInterface::pushTime(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);
+     //DPRINTLN_F("UserInterface::pushTime(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);
 
     if(this->currentStatus == USER_INTERFACE_STATUS_STANDBY){
         this->showIdleScreen(hours, minutes, seconds);
@@ -66,10 +67,11 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
     DPRINTLN_F("UserInterface::onKeyUp(%d)", key);
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
 
-    me->lcd->wakeup();
-    switch(me->currentStatus
-    ){
-        case USER_INTERFACE_STATUS_OFF:{            
+    me->lcd->resetLightOnTimeout();
+    switch(me->currentStatus)
+    {
+        case USER_INTERFACE_STATUS_OFF:{    
+            me->lcd->wakeup();        
             break;
         }  
         case USER_INTERFACE_STATUS_STANDBY:{
@@ -109,7 +111,7 @@ void UserInterface::onLcdWakeup(void* caller_ptr){
 #pragma region Private
 
 void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
-    DPRINTLN_F("UserInterface::showIdleScreen(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);    
+    //DPRINTLN_F("UserInterface::showIdleScreen(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);    
     
     char line[8+1];
     sprintf(line, "%02d:%02d:%02d", hours, minutes, seconds);
@@ -117,14 +119,19 @@ void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
     lcd->writeLn(1,8,line);
 }
 
-void UserInterface::showMenuScreen(MenuItem* item){
-    //char line[16+1];
-    //snprintf(line,17,"%s",item->title);
-    //lcd->writeLn(0,0,line);
+void UserInterface::showMenuScreen(MenuItem item){
+    DPRINTLN_F("UserInterface::showMenuScreen{%d,%s}:currentStatus=%d", item.title.c_str(), this->currentStatus);
+    
+    char line[16+1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    lcd->writeLn(1,0,line); -> not working
+
+    snprintf(line,17,"%s",item.title.c_str());
+    lcd->writeLn(0,0,line);
+    
 }
 
 void UserInterface::processMenu(Keys pressedKey){
-     DPRINTLN_F("UserInterface::processMenu(%d)", pressedKey);
+     //DPRINTLN_F("UserInterface::processMenu(%d)", pressedKey);
         switch (pressedKey)
         {
             case Keys::KEY_ENTER:
@@ -138,8 +145,7 @@ void UserInterface::processMenu(Keys pressedKey){
             case Keys::KEY_DOWN:
                 menu->movePrevious();
         };
-    this->currentMenuItem = &(this->menu->getCurrentItem());
-    this->showMenuScreen(this->currentMenuItem);
+    this->showMenuScreen(this->menu->getCurrentItem());
 }
 
 void UserInterface::setupMenuCallbacks(){

@@ -35,7 +35,6 @@ void Lcd::update()
 #pragma region Actions
 void Lcd::wakeup(){
    this->on();
-   timerLightOn = millis();
    if(onWakeup != NULL){
        onWakeup(callerCallbackInstance);
    }
@@ -70,6 +69,9 @@ void Lcd::on(){
 
 #pragma endregion
 
+void Lcd::resetLightOnTimeout(){
+    this->timerLightOn = millis();
+}
 
 // void Lcd::showTimeAndDate(int col, int row)
 // {

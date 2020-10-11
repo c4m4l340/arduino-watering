@@ -29,7 +29,9 @@ public:
 	void* callerCallbackInstance = NULL;
 	MenuItem getCurrentItem();
 	
-	Menu();
+	Menu(MenuItem* root);
+	void begin();
+	
 	void reset();
 	void moveNext();
 	void movePrevious();
@@ -37,7 +39,6 @@ public:
 
 	bool hasSubItems();
 	bool isRootItem();
-    void setRoot(MenuItem root);
 };
 
 

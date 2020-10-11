@@ -11,7 +11,7 @@
 #include "headers\Lcd.h"
 #include "headers\WaterProgram.h"
 #include "headers\UserInterface.h"
-
+#include "headers\MenuItemsSetup.h"
 
 /* OutputPins*/
 #define PIN_RGB_RED 5
@@ -37,9 +37,10 @@ Communications Comms(RS485_RX, RS485_TX, RS485_TXRX_SELECTOR);
 LedRgb Led(PIN_RGB_RED, PIN_RGB_GREEN, PIN_RGB_BLUE);
 WaterProgram WProgram(&Led, &Comms);
 
+Menu Menu(itemsRoot);
 Keypad Keypad(KEYPAD_PIN);
 Lcd Lcd(LCD_I2C_ADDRESS, 16, 2);
-UserInterface UserInterface(&Lcd, &Keypad, &WProgram);
+UserInterface UserInterface(&Lcd, &Keypad, &WProgram, &Menu);
 
 //callback declarations
 void onGetTime(DateTime datetime, void* caller_ptr);
@@ -60,8 +61,9 @@ void setup(){
     Comms.begin(RS485_SPEED);
     WProgram.begin();
 
+    Menu.begin();
     Lcd.begin();
-    Keypad.begin();
+    Keypad.begin();    
     UserInterface.begin();
 }
 

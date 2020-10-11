@@ -13,7 +13,7 @@
 class UserInterface{
     private:
         byte currentStatus = USER_INTERFACE_STATUS_OFF;
-        byte previousStatus = USER_INTERFACE_STATUS_OFF;
+        //byte previousStatus = USER_INTERFACE_STATUS_OFF;
 
         Keys pressedKey = Keys::KEY_NO_KEY;
 
@@ -28,18 +28,18 @@ class UserInterface{
         WaterProgram* waterProg;
 
         Menu* menu;
-        MenuItem* currentMenuItem = NULL;
-        MenuItem* previousMenuItem = NULL;
+        //MenuItem* currentMenuItem = NULL;
+        //MenuItem* previousMenuItem = NULL;
 
         void setupMenuCallbacks();
 
         void showIdleScreen(int hours, int minutes, int seconds);
-        void showMenuScreen(MenuItem* item);
+        void showMenuScreen(MenuItem item);
         void processMenu(Keys pressedKey);
 
         
     public:
-        UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram);
+        UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram, Menu* menu);
         void begin();
         void update();
 
