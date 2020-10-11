@@ -6,13 +6,15 @@
 #include "WaterProgram.h"
 
 #define USER_INTERFACE_STATUS_OFF 0
-#define USER_INTERFACE_STANDBY 1
-#define USER_INTERFACE_USING_MENU 2
+#define USER_INTERFACE_STATUS_STANDBY 1
+#define USER_INTERFACE_STATUS_USING_MENU 2
 
 class UserInterface{
     private:
         byte currentStatus = USER_INTERFACE_STATUS_OFF;
-        byte previousStatus = USER_INTERFACE_STATUS_OFF;
+        //byte previousStatus = USER_INTERFACE_STATUS_OFF;
+
+        Keys pressedKey = Keys::KEY_NO_KEY;
 
         Lcd* lcd;
         static void onLcdSleep(void* caller_ptr);
@@ -25,6 +27,7 @@ class UserInterface{
         WaterProgram* waterProg;
 
         void showIdleScreen(int hours, int minutes, int seconds);
+        void processMenu(Keys pressedKey);
 
     public:
         UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram);

@@ -33,10 +33,11 @@ void UserInterface::update(){
             
             break;
         }
-        case USER_INTERFACE_USING_MENU:{
+        case USER_INTERFACE_STATUS_USING_MENU:{
             break;
         }
-        case USER_INTERFACE_STANDBY:{
+
+        case USER_INTERFACE_STATUS_STANDBY:{
             break;
         }
     }
@@ -49,7 +50,7 @@ void UserInterface::update(){
 void UserInterface::pushTime(int hours, int minutes, int seconds){
      DPRINTLN_F("UserInterface::pushTime(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);
 
-    if(this->currentStatus == USER_INTERFACE_STANDBY){
+    if(this->currentStatus == USER_INTERFACE_STATUS_STANDBY){
         this->showIdleScreen(hours, minutes, seconds);
     }
 }
@@ -60,9 +61,28 @@ void UserInterface::pushTime(int hours, int minutes, int seconds){
 
 void UserInterface::onKeyUp(int key, void* caller_ptr){
     DPRINTLN_F("UserInterface::onKeyUp(%d)", key);
-
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
-    me->lcd->wakeup();
+
+    switch(me->currentStatus
+    ){
+        case USER_INTERFACE_STATUS_OFF:{
+            me->lcd->wakeup();
+            break;
+        }  
+        case USER_INTERFACE_STATUS_STANDBY:{
+                if(key == Keys::KEY_ENTER){
+                    me->processMenu(Keys::KEY_NO_KEY);
+                }
+            break;
+        } 
+        case USER_INTERFACE_STATUS_USING_MENU:{
+            me->processMenu(key);
+            break;
+        }
+    }
+
+
+    
     // switch(key){
     //     case Keys::KEY_UP: me->waterProg->open(); break;
     //     case Keys::KEY_DOWN: me->waterProg->close();break;
@@ -84,7 +104,7 @@ void UserInterface::onLcdSleep(void* caller_ptr){
 
 void UserInterface::onLcdWakeup(void* caller_ptr){
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
-    me->currentStatus = USER_INTERFACE_STANDBY;
+    me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
 
      DPRINTLN_F("UserInterface::onLcdWakeup:currentStatus=%d",me->currentStatus);
 }
@@ -100,5 +120,13 @@ void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
     sprintf(line, "%02d:%02d:%02d", hours, minutes, seconds);
 
     lcd->writeLn(1,8,line);
+}
+
+void UserInterface::processMenu(Keys pressedKey){
+    if(pressedKey == Keys::KEY_NO_KEY){
+        //Open root
+    } else {
+        
+    }
 }
 #pragma endregion
