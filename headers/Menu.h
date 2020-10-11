@@ -24,8 +24,9 @@ private:
 	MenuItem* currentLevelItems;
 	int currentLevelItemsCount;
 
-    void* callerCallbackInstance = NULL;
+    
 public:
+	void* callerCallbackInstance = NULL;
 	MenuItem getCurrentItem();
 	
 	Menu();

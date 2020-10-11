@@ -25,7 +25,7 @@ void UserInterface::begin(){
     lcd->onWakeup = onLcdWakeup;
     lcd->callerCallbackInstance = this;
 
-    this->buildMenu();    
+    this->setupMenuCallbacks();    
 }
 
 void UserInterface::update(){
@@ -66,10 +66,10 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
     DPRINTLN_F("UserInterface::onKeyUp(%d)", key);
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
 
+    me->lcd->wakeup();
     switch(me->currentStatus
     ){
-        case USER_INTERFACE_STATUS_OFF:{
-            me->lcd->wakeup();
+        case USER_INTERFACE_STATUS_OFF:{            
             break;
         }  
         case USER_INTERFACE_STATUS_STANDBY:{
@@ -117,7 +117,14 @@ void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
     lcd->writeLn(1,8,line);
 }
 
+void UserInterface::showMenuScreen(MenuItem* item){
+    //char line[16+1];
+    //snprintf(line,17,"%s",item->title);
+    //lcd->writeLn(0,0,line);
+}
+
 void UserInterface::processMenu(Keys pressedKey){
+     DPRINTLN_F("UserInterface::processMenu(%d)", pressedKey);
         switch (pressedKey)
         {
             case Keys::KEY_ENTER:
@@ -132,18 +139,12 @@ void UserInterface::processMenu(Keys pressedKey){
                 menu->movePrevious();
         };
     this->currentMenuItem = &(this->menu->getCurrentItem());
+    this->showMenuScreen(this->currentMenuItem);
 }
 
-void UserInterface::buildMenu(){
+void UserInterface::setupMenuCallbacks(){
 
-    MenuItem root[] = {
-        {NULL,"Run",0,NULL},
-        {NULL, "Stop",0,NULL},
-        {NULL, "Date/Time",0,NULL},
-        {NULL, "Programs",0,NULL}
-    };
-    
-    this->menu->setRoot(root[0]);
+    this->menu->callerCallbackInstance = this;        
 }
 
 #pragma endregion

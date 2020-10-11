@@ -33,15 +33,19 @@
 
 // };
 
-// MenuItem itemsRoot[] = {
-// 	{ action=NULL, title="CheckSensors", 0,NULL}
-// 	{ MenuItemActionId::ItemRun,"Run",0, NULL },
-// 	{ MenuItemActionId::ItemStop,"Stop",0, NULL },
-// 	{ MenuItemActionId::ItemRunMode,"Run Mode",0, NULL },
-// 	{ MenuItemActionId::ItemDateTime,"Date/Time",0, NULL },
-// 	{ MenuItemActionId::ItemPrograms,"Programs",sizeof(itemsPrograms) / sizeof(MenuItem), itemsPrograms },
-// 	{ MenuItemActionId::ItemCheckSensor,"Check Sensors",sizeof(itemsCheckSensors) / sizeof(MenuItem), itemsCheckSensors }
-// };
+MenuItem itemsRoot[] = {
+	{ NULL, "Run", 0,NULL},
+    { NULL, "Stop", 0,NULL},
+    { NULL, "Date/Time", 0,NULL},
+    { NULL, "Programs", 0,NULL}
+
+	// { MenuItemActionId::ItemRun,"Run",0, NULL },
+	// { MenuItemActionId::ItemStop,"Stop",0, NULL },
+	// { MenuItemActionId::ItemRunMode,"Run Mode",0, NULL },
+	// { MenuItemActionId::ItemDateTime,"Date/Time",0, NULL },
+	// { MenuItemActionId::ItemPrograms,"Programs",sizeof(itemsPrograms) / sizeof(MenuItem), itemsPrograms },
+	// { MenuItemActionId::ItemCheckSensor,"Check Sensors",sizeof(itemsCheckSensors) / sizeof(MenuItem), itemsCheckSensors }
+};
 
 
 #endif

@@ -1,6 +1,10 @@
 #include "headers\Menu.h"
+#include "headers\MenuItemsSetup.h"
 
 Menu::Menu() {
+	this->rootItem = itemsRoot;
+	this->rootItemsCount = sizeof(itemsRoot) / sizeof(MenuItem);
+	this->reset();
 }
 
 MenuItem Menu::getCurrentItem(){
