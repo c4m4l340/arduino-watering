@@ -21,10 +21,10 @@ using KeyUpCallback = void (*)(int key, void* caller_ptr);
         private:
             int inputPin;
             int const DEBOUCE_KEY_VALUE = 2;
-            int const  KEY_NO_KEY_VALUE = 600;
-            int const  KEY_BACK_VALUE = 400;
-            int const  KEY_DOWN_VALUE = 320;
-            int const  KEY_UP_VALUE = 140;
+            int const  KEY_NO_KEY_VALUE = 650;
+            int const  KEY_BACK_VALUE = 470;
+            int const  KEY_DOWN_VALUE = 325;
+            int const  KEY_UP_VALUE = 160;
             int const  KEY_ENTER_VALUE = 50;
             
             Keys readKeys[3];
