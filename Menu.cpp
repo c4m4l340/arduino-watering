@@ -1,15 +1,26 @@
+#define DEBUG
+
 #include "headers\Menu.h"
+#include "headers\SerialDebug.h"
 
-
-Menu::Menu(MenuItem* root) {
+Menu::Menu(MenuItem* root, int size) {
 	this->rootItem = root;
-	this->rootItemsCount = sizeof(root) / sizeof(MenuItem);
+	this->rootItemsCount = size;
 	
 }
 
 void Menu::begin(){
 	this->reset();
 }
+
+void Menu::update(){
+	if(millis()-lastUpdateTime > 1000){
+		lastUpdateTime = millis();
+		 DPRINTLN_F("Menu::update(currentItem:%p, count:%d, childs:%d, isRoot:%d)", 
+		 currentItem, currentLevelItemsCount, hasSubItems(), isRootItem());
+	}
+}
+
 
 
 MenuItem Menu::getCurrentItem(){

@@ -24,14 +24,16 @@ private:
 	MenuItem* currentLevelItems;
 	int currentLevelItemsCount;
 
+	unsigned long lastUpdateTime=0;
     
 public:
 	void* callerCallbackInstance = NULL;
 	MenuItem getCurrentItem();
 	
-	Menu(MenuItem* root);
+	Menu(MenuItem* root, int size);
 	void begin();
-	
+	void update();
+
 	void reset();
 	void moveNext();
 	void movePrevious();

@@ -30,7 +30,12 @@ void UserInterface::begin(){
 }
 
 void UserInterface::update(){
-    
+        if(millis() - lastDebugTime > 1000){
+            DPRINTLN_F("UserInterface:currentStatus(%d):", this->currentStatus);
+            lastDebugTime = millis();
+        }
+
+
     switch (this->currentStatus)
     {
         case USER_INTERFACE_STATUS_OFF:{
@@ -76,8 +81,8 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
         }  
         case USER_INTERFACE_STATUS_STANDBY:{
                 if(key == Keys::KEY_ENTER){
-                    me->processMenu(Keys::KEY_BACK); //reset
                     me->currentStatus = USER_INTERFACE_STATUS_USING_MENU;
+                    me->processMenu(Keys::KEY_BACK); //reset                    
                 }
             break;
         } 
@@ -94,7 +99,7 @@ void UserInterface::onKeyDown(int key, void* caller_ptr){
 void UserInterface::onLcdSleep(void* caller_ptr){
         UserInterface* me = static_cast<UserInterface*>(caller_ptr);
         me->currentStatus = USER_INTERFACE_STATUS_OFF;
-        DPRINTLN_F("UserInterface::onLcdSleep:currentStatus=%d",me->currentStatus);
+        DPRINTLN("UserInterface::onLcdSleep");
         
         me->lcd->clear();
 }
@@ -103,7 +108,7 @@ void UserInterface::onLcdWakeup(void* caller_ptr){
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
     me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
 
-     DPRINTLN_F("UserInterface::onLcdWakeup:currentStatus=%d",me->currentStatus);
+     DPRINTLN("UserInterface::onLcdWakeup");
 }
 
 #pragma endregion
@@ -120,18 +125,18 @@ void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
 }
 
 void UserInterface::showMenuScreen(MenuItem item){
-    DPRINTLN_F("UserInterface::showMenuScreen{%d,%s}:currentStatus=%d", item.title.c_str(), this->currentStatus);
+    //DPRINTLN_F("UserInterface::showMenuScreen{%d,%s}:currentStatus=%d", item.title.c_str(), this->currentStatus);
     
-    char line[16+1] = {20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20};
-    lcd->writeLn(1,0,line);
+    char line[16+1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    lcd->writeLn(1,0,"                \0");
+    lcd->writeLn(0,0,"                \0");
 
-    snprintf(line,17,"%s",item.title.c_str());
-    lcd->writeLn(0,0,line);
-    
+    snprintf(line,16+1,"%s",item.title.c_str());
+    lcd->writeLn(0,0,line);    
 }
 
 void UserInterface::processMenu(Keys pressedKey){
-     //DPRINTLN_F("UserInterface::processMenu(%d)", pressedKey);
+     DPRINTLN_F("UserInterface::processMenu(%d)", pressedKey);
         switch (pressedKey)
         {
             case Keys::KEY_ENTER:
@@ -145,7 +150,8 @@ void UserInterface::processMenu(Keys pressedKey){
             case Keys::KEY_DOWN:
                 menu->movePrevious();
         };
-    this->showMenuScreen(this->menu->getCurrentItem());
+    MenuItem  item = this->menu->getCurrentItem();
+    this->showMenuScreen(item);
 }
 
 void UserInterface::setupMenuCallbacks(){

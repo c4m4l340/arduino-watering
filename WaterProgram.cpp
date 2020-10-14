@@ -80,7 +80,7 @@ bool WaterProgram::isTimeToRun(int hours, int minutes, int seconds){
 }
 
 void WaterProgram::runScheduled(){
-    DPRINTLN("runScheduled");
+    //DPRINTLN("runScheduled");
     if(comms->status == CommStatus::Standby){
         byte buffer[] = {'R','U','N'};
         comms->sendCommand(buffer,3);

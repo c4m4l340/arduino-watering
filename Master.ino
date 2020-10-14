@@ -37,7 +37,7 @@ Communications Comms(RS485_RX, RS485_TX, RS485_TXRX_SELECTOR);
 LedRgb Led(PIN_RGB_RED, PIN_RGB_GREEN, PIN_RGB_BLUE);
 WaterProgram WProgram(&Led, &Comms);
 
-Menu Menu(itemsRoot);
+Menu Menu(itemsRoot, sizeof(itemsRoot) / sizeof(MenuItem));
 Keypad Keypad(KEYPAD_PIN);
 Lcd Lcd(LCD_I2C_ADDRESS, 16, 2);
 UserInterface UserInterface(&Lcd, &Keypad, &WProgram, &Menu);
@@ -74,8 +74,10 @@ void loop(){
     Clock.update();
     Lcd.update();
 
+    Menu.update();
     Led.update();
     WProgram.update();
+    UserInterface.update();
 }
 
 
@@ -84,7 +86,7 @@ void onGetTime(DateTime datetime, void* caller_ptr){
      datetime.year(), datetime.month(), datetime.day(),
      datetime.hour(), datetime.minute(), datetime.second());
 
-    WProgram.pushTime(datetime.hour(), datetime.minute(), datetime.second());
+    //WProgram.pushTime(datetime.hour(), datetime.minute(), datetime.second());
     UserInterface.pushTime(datetime.hour(), datetime.minute(), datetime.second());
 }
 

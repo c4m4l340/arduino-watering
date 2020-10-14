@@ -15,6 +15,8 @@ class UserInterface{
         byte currentStatus = USER_INTERFACE_STATUS_OFF;
         //byte previousStatus = USER_INTERFACE_STATUS_OFF;
 
+        unsigned long lastDebugTime = 0;
+
         Keys pressedKey = Keys::KEY_NO_KEY;
 
         Lcd* lcd;
