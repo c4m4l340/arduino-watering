@@ -118,10 +118,16 @@ void UserInterface::onLcdWakeup(void* caller_ptr){
 void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
     //DPRINTLN_F("UserInterface::showIdleScreen(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);    
     
-    char line[8+1];
-    sprintf(line, "%02d:%02d:%02d", hours, minutes, seconds);
+    char line[16+1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    lcd->writeLn(1,0,"                \0");
+    lcd->writeLn(0,0,"                \0");
+    
+    
+    sprintf(line, "Good %s", (hours>6) && (hours<12)?"morning": ((hours>12)&&(hours<20)?"afternoon":"night" ));
+    lcd->writeLn(0,0,line);
 
-    lcd->writeLn(1,8,line);
+    sprintf(line, "%02d:%02d:%02d", hours, minutes, seconds);
+    lcd->writeLn(1,0,line);
 }
 
 void UserInterface::showMenuScreen(MenuItem item){
