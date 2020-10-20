@@ -144,11 +144,13 @@ void UserInterface::processMenu(Keys pressedKey){
                 break;
             case Keys::KEY_BACK:
                 menu->reset();
+                break;
             case Keys::KEY_UP:
                 menu->moveNext();
                 break;
             case Keys::KEY_DOWN:
                 menu->movePrevious();
+                break;
         };
     MenuItem  item = this->menu->getCurrentItem();
     this->showMenuScreen(item);
