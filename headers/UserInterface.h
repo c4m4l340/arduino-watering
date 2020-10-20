@@ -27,8 +27,6 @@ class UserInterface{
         static void onKeyUp(int key, void* caller_ptr);
         static void onKeyDown(int key, void* caller_ptr);
 
-        WaterProgram* waterProg;
-
         Menu* menu;
         //MenuItem* currentMenuItem = NULL;
         //MenuItem* previousMenuItem = NULL;
@@ -40,7 +38,7 @@ class UserInterface{
 
         
     public:
-        UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram, Menu* menu);
+        UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu);
         void begin();
         void update();
 

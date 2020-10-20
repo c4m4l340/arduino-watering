@@ -6,12 +6,10 @@
 #include "headers\Keypad.h"
 #include <WString.h>
 
-UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, WaterProgram* waterProgram, Menu* menu){
+UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu){
     this->lcd = lcd;
     this->keypad = keypad;
-    this->waterProg = waterProgram;
     this->menu = menu;
-    
 }
 
 #pragma region Task setup and run
@@ -25,8 +23,6 @@ void UserInterface::begin(){
     lcd->onSleep = onLcdSleep;
     lcd->onWakeup = onLcdWakeup;
     lcd->callerCallbackInstance = this;
-
-    //this->setupMenuCallbacks();    
 }
 
 void UserInterface::update(){

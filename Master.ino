@@ -40,7 +40,7 @@ WaterProgram WProgram(&Led, &Comms);
 Menu Menu(itemsRoot, sizeof(itemsRoot) / sizeof(MenuItem));
 Keypad Keypad(KEYPAD_PIN);
 Lcd Lcd(LCD_I2C_ADDRESS, 16, 2);
-UserInterface UserInterface(&Lcd, &Keypad, &WProgram, &Menu);
+UserInterface UserInterface(&Lcd, &Keypad, &Menu);
 
 //callback declarations
 void onGetTime(DateTime datetime, void* caller_ptr);
