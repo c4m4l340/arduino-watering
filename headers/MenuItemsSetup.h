@@ -19,25 +19,25 @@
 // 	ItemStop
 // };
 
-// MenuItem itemsCheckSensors[] = {
-// 	{ MenuItemActionId::ItemCheckAddress1,"Check Address 1",0, NULL },
-// 	{ MenuItemActionId::ItemCheckAddress2,"Check Address 2",0, NULL }
-// };
+MenuItem itemsCheckSensors[] = {
+	{ NULL,"Check addr 1",0, NULL },
+	{ NULL,"Check addr 2",0, NULL }
+};
 
 
-// MenuItem itemsPrograms[] = {
-// 	{ MenuItemActionId::ItemProgram1,"Program 1",0, NULL },
-// 	{ MenuItemActionId::ItemProgram2,"Program 2",0, NULL },
-// 	//{ MenuItemActionId::ItemProgram3,"Program 3",0, NULL },
-// 	//{ MenuItemActionId::ItemProgram4,"Program 4",0, NULL },
-
-// };
+ MenuItem itemsPrograms[] = {
+ 	{ NULL,"Program 1",0, NULL },
+ 	{ NULL,"Program 2",0, NULL },
+	{ NULL,"Program 3",0, NULL },
+	{ NULL,"Program 4",0, NULL },
+};
 
 MenuItem itemsRoot[] = {
-	{ NULL, "Run", 0,NULL},
-    { NULL, "Stop", 0,NULL},
-    { NULL, "Date/Time", 0,NULL},
-    { NULL, "Programs", 0,NULL}
+	{ NULL, "Run", 0, NULL},
+    { NULL, "Stop", 0, NULL},
+    { NULL, "Date/Time", 0, NULL},
+    { NULL, "Programs", sizeof(itemsPrograms) / sizeof(MenuItem), itemsPrograms},
+	{ NULL, "Check sensors", sizeof(itemsCheckSensors) / sizeof(MenuItem), itemsCheckSensors}
 
 	// { MenuItemActionId::ItemRun,"Run",0, NULL },
 	// { MenuItemActionId::ItemStop,"Stop",0, NULL },

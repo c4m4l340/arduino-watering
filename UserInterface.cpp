@@ -131,7 +131,7 @@ void UserInterface::showMenuScreen(MenuItem item){
     lcd->writeLn(1,0,"                \0");
     lcd->writeLn(0,0,"                \0");
 
-    snprintf(line,16+1,"%s",item.title.c_str());
+    snprintf(line,16+1,"%s%c",item.title.c_str(), (item.hasChildren()?0x7E:0x00));
     lcd->writeLn(0,0,line);    
 }
 

@@ -11,6 +11,10 @@ struct MenuItem {
 	String title;
 	int childsCount;
 	MenuItem *childs;
+
+	bool hasChildren() {
+		return childs!=NULL;
+	};
 };
 
 
@@ -39,8 +43,7 @@ public:
 	void movePrevious();
 	void enter();
 
-	bool hasSubItems();
-	bool isRootItem();
+	bool isCurrentItemRoot();
 };
 
 

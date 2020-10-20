@@ -17,7 +17,7 @@ void Menu::update(){
 	if(millis()-lastUpdateTime > 1000){
 		lastUpdateTime = millis();
 		 DPRINTLN_F("Menu::update(currentItem:%p, count:%d, childs:%d, isRoot:%d)", 
-		 currentItem, currentLevelItemsCount, hasSubItems(), isRootItem());
+		 currentItem, currentLevelItemsCount, currentItem->hasChildren(), isCurrentItemRoot());
 	}
 }
 
@@ -49,14 +49,13 @@ void Menu::enter() {
 	{
 		currentLevelItems = currentItem->childs;
 		currentLevelItemsCount = currentItem->childsCount;
-		currentItem = currentLevelItems;
+		currentItem = currentItem->childs;
+	}else{
+
 	}
 }
 
-bool Menu::hasSubItems() {
-	return currentItem->childs != NULL;
-}
 
-bool Menu::isRootItem() {
+bool Menu::isCurrentItemRoot() {
 	return currentItem == rootItem;
 }
