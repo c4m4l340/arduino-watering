@@ -30,19 +30,25 @@ class UserInterface{
         Menu* menu;
         //MenuItem* currentMenuItem = NULL;
         //MenuItem* previousMenuItem = NULL;
+        static void execMenuOpen(void* caller_ptr);
+        static void execMenuClose(void* caller_ptr);
+        static void execSetDateTime(void* caller_ptr);
 
+        WaterProgram* wprogram;
 
         void showIdleScreen(int hours, int minutes, int seconds);
-        void showMenuScreen(MenuItem item);
+        void showMenuScreen(MenuItem* item);
         void processMenu(Keys pressedKey);
+        void setMenuCallbacks();
 
-        
     public:
-        UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu);
+        UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram* wprogram);
         void begin();
         void update();
 
         void pushTime(int hours, int minutes, int seconds);
+
+        
 };
 
 #endif

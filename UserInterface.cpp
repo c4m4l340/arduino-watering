@@ -6,10 +6,11 @@
 #include "headers\Keypad.h"
 #include <WString.h>
 
-UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu){
+UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram* wprogram){
     this->lcd = lcd;
     this->keypad = keypad;
     this->menu = menu;
+    this->wprogram = wprogram;
 }
 
 #pragma region Task setup and run
@@ -23,6 +24,8 @@ void UserInterface::begin(){
     lcd->onSleep = onLcdSleep;
     lcd->onWakeup = onLcdWakeup;
     lcd->callerCallbackInstance = this;
+
+    setMenuCallbacks();
 }
 
 void UserInterface::update(){
@@ -107,6 +110,21 @@ void UserInterface::onLcdWakeup(void* caller_ptr){
      DPRINTLN("UserInterface::onLcdWakeup");
 }
 
+void UserInterface::execMenuOpen(void* caller_ptr){
+    UserInterface* me = static_cast<UserInterface*>(caller_ptr);
+    me->wprogram->open();
+}
+
+void UserInterface::execMenuClose(void* caller_ptr){
+    UserInterface* me = static_cast<UserInterface*>(caller_ptr);
+    me->wprogram->abort();
+}
+
+void UserInterface::execSetDateTime(void* caller_ptr){
+    UserInterface* me = static_cast<UserInterface*>(caller_ptr);
+
+}
+
 #pragma endregion
 
 #pragma region Private
@@ -126,14 +144,14 @@ void UserInterface::showIdleScreen(int hours, int minutes, int seconds){
     lcd->writeLn(1,0,line);
 }
 
-void UserInterface::showMenuScreen(MenuItem item){
+void UserInterface::showMenuScreen(MenuItem* item){
     //DPRINTLN_F("UserInterface::showMenuScreen{%d,%s}:currentStatus=%d", item.title.c_str(), this->currentStatus);
     
     char line[16+1] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     lcd->writeLn(1,0,"                \0");
     lcd->writeLn(0,0,"                \0");
 
-    snprintf(line,16+1,"%s%c",item.title.c_str(), (item.hasChildren()?0x7E:0x00));
+    snprintf(line,16+1,"%s%c",item->title.c_str(), (item->hasChildren()?0x7E:0x00));
     lcd->writeLn(0,0,line);    
 }
 
@@ -154,9 +172,17 @@ void UserInterface::processMenu(Keys pressedKey){
                 menu->movePrevious();
                 break;
         };
-    MenuItem  item = this->menu->getCurrentItem();
+    MenuItem* item = this->menu->getCurrentItem();
     this->showMenuScreen(item);
 }
 
-
+void UserInterface::setMenuCallbacks(){
+    //get root item
+    menu->callerCallbackInstance = this;
+    menu->reset();
+    MenuItem* root = menu->getCurrentItem();
+    (root+0)->action = execMenuOpen;
+    (root+1)->action = execMenuClose;
+    (root+2)->action = execSetDateTime;
+}
 #pragma endregion

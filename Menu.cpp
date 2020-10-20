@@ -16,15 +16,16 @@ void Menu::begin(){
 void Menu::update(){
 	if(millis()-lastUpdateTime > 1000){
 		lastUpdateTime = millis();
-		 DPRINTLN_F("Menu::update(currentItem:%p, count:%d, childs:%d, isRoot:%d)", 
-		 currentItem, currentLevelItemsCount, currentItem->hasChildren(), isCurrentItemRoot());
+		 DPRINTLN_F("Menu::update(currentItem:%p, count:%d, childs:%d, isRoot:%d, action:%p, call_ptr:%p)", 
+		 currentItem, currentLevelItemsCount, currentItem->hasChildren(), 
+		 isCurrentItemRoot(), currentItem->action, this->callerCallbackInstance);
 	}
 }
 
 
 
-MenuItem Menu::getCurrentItem(){
-	return *currentItem;
+MenuItem* Menu::getCurrentItem(){
+	return currentItem;
 }
 
 void Menu::reset() {

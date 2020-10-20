@@ -15,6 +15,10 @@ struct MenuItem {
 	bool hasChildren() {
 		return childs!=NULL;
 	};
+
+	void setAction(ActionCallback action){
+		this->action = action;
+	}
 };
 
 
@@ -32,7 +36,7 @@ private:
     
 public:
 	void* callerCallbackInstance = NULL;
-	MenuItem getCurrentItem();
+	MenuItem* getCurrentItem();
 	
 	Menu(MenuItem* root, int size);
 	void begin();
