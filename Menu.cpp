@@ -51,6 +51,9 @@ void Menu::enter() {
 		currentLevelItemsCount = currentItem->childsCount;
 		currentItem = currentItem->childs;
 	}else{
+		if(currentItem->action != NULL){
+			currentItem->action(callerCallbackInstance);
+		}
 
 	}
 }

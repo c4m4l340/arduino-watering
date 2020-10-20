@@ -65,6 +65,9 @@ void setup(){
     Lcd.begin();
     Keypad.begin();    
     UserInterface.begin();
+
+    itemsRoot[0].action = open;    
+    itemsRoot[1].action = stop;
 }
 
 void loop(){
@@ -86,7 +89,14 @@ void onGetTime(DateTime datetime, void* caller_ptr){
      datetime.year(), datetime.month(), datetime.day(),
      datetime.hour(), datetime.minute(), datetime.second());
 
-    //WProgram.pushTime(datetime.hour(), datetime.minute(), datetime.second());
+    WProgram.pushTime(datetime.hour(), datetime.minute(), datetime.second());
     UserInterface.pushTime(datetime.hour(), datetime.minute(), datetime.second());
 }
 
+void open(){
+    WProgram.open();
+}
+
+void stop(){
+    WProgram.abort();
+}

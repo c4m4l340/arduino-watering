@@ -33,7 +33,6 @@ class UserInterface{
         //MenuItem* currentMenuItem = NULL;
         //MenuItem* previousMenuItem = NULL;
 
-        void setupMenuCallbacks();
 
         void showIdleScreen(int hours, int minutes, int seconds);
         void showMenuScreen(MenuItem item);

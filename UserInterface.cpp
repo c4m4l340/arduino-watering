@@ -26,7 +26,7 @@ void UserInterface::begin(){
     lcd->onWakeup = onLcdWakeup;
     lcd->callerCallbackInstance = this;
 
-    this->setupMenuCallbacks();    
+    //this->setupMenuCallbacks();    
 }
 
 void UserInterface::update(){
@@ -162,9 +162,5 @@ void UserInterface::processMenu(Keys pressedKey){
     this->showMenuScreen(item);
 }
 
-void UserInterface::setupMenuCallbacks(){
-
-    this->menu->callerCallbackInstance = this;        
-}
 
 #pragma endregion

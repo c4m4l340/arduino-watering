@@ -24,7 +24,6 @@ MenuItem itemsCheckSensors[] = {
 	{ NULL,"Check Addr 2",0, NULL }
 };
 
-
  MenuItem itemsPrograms[] = {
  	{ NULL,"Program 1",0, NULL },
  	{ NULL,"Program 2",0, NULL },
@@ -33,7 +32,7 @@ MenuItem itemsCheckSensors[] = {
 };
 
 MenuItem itemsRoot[] = {
-	{ NULL, "Run", 0, NULL},
+	{ NULL, "Open", 0, NULL},
     { NULL, "Stop", 0, NULL},
 	//{ NULL, "Run Mode", 0, NULL},
     { NULL, "Date/Time", 0, NULL},
