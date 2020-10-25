@@ -1,6 +1,7 @@
 #ifndef __DATE_TIME_SETTING__
 #define __DATE_TIME_SETTING__
 
+#include "Lcd.h"
 
 #define DATETIMESETTING_YEAR 0
 #define DATETIMESETTING_MONTH 1
@@ -11,16 +12,25 @@
 class DateTimeSetting{
 
     private:
+        Lcd* lcd;
+
         int year;
         int month;
         int day;
         int hour;
         int minute;
         
+        bool setDate;
+        bool setTime;
+
         int currentStatus;
         long lastBlinkUpdateTime;
+        int blinkOn;
 
+        void blink();
     public:
+        DateTimeSetting(Lcd* lcd);
+
         void begin();
         void update();
         

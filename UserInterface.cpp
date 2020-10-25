@@ -12,7 +12,7 @@ UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram*
     this->keypad = keypad;
     this->menu = menu;
     this->wprogram = wprogram;
-    this->dateTimeSetting = new DateTimeSetting;
+    this->dateTimeSetting = new DateTimeSetting(this->lcd);
 }
 
 #pragma region Task setup and run
@@ -37,22 +37,24 @@ void UserInterface::update(){
         DPRINTLN_F("UserInterface:currentStatus(%d):", this->currentStatus);
         lastDebugTime = millis();
     }
-
-    dateTimeSetting->update();
-    //switch (this->currentStatus)
-    // {
-    //     case USER_INTERFACE_STATUS_OFF:{
+    switch (this->currentStatus)
+    {
+        case USER_INTERFACE_STATUS_OFF:{
             
-    //         break;
-    //     }
-    //     case USER_INTERFACE_STATUS_USING_MENU:{
-    //         break;
-    //     }
+            break;
+        }
+        case USER_INTERFACE_STATUS_USING_MENU:{
+            break;
+        }
 
-    //     case USER_INTERFACE_STATUS_STANDBY:{
-    //         break;
-    //     }    
-    // }
+        case USER_INTERFACE_STATUS_STANDBY:{
+            break;
+        }    
+        case USER_ACTION_SETTING_DATETIME:{
+            dateTimeSetting->update();
+            break;
+        }
+    }
 }
 #pragma endregion
 
