@@ -4,6 +4,7 @@
 #include "headers\UserInterface.h"
 #include "headers\Lcd.h"
 #include "headers\Keypad.h"
+#include "headers\DateTimeSetting.h"
 #include <WString.h>
 
 UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram* wprogram){
@@ -11,6 +12,7 @@ UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram*
     this->keypad = keypad;
     this->menu = menu;
     this->wprogram = wprogram;
+    this->dateTimeSetting = new DateTimeSetting;
 }
 
 #pragma region Task setup and run
@@ -26,30 +28,31 @@ void UserInterface::begin(){
     lcd->callerCallbackInstance = this;
 
     setMenuCallbacks();
+
+    dateTimeSetting->begin();
 }
 
 void UserInterface::update(){
-        if(millis() - lastDebugTime > 1000){
-            DPRINTLN_F("UserInterface:currentStatus(%d):", this->currentStatus);
-            lastDebugTime = millis();
-        }
-
-
-    switch (this->currentStatus)
-    {
-        case USER_INTERFACE_STATUS_OFF:{
-            
-            break;
-        }
-        case USER_INTERFACE_STATUS_USING_MENU:{
-            break;
-        }
-
-        case USER_INTERFACE_STATUS_STANDBY:{
-            break;
-        }
+    if(millis() - lastDebugTime > 1000){
+        DPRINTLN_F("UserInterface:currentStatus(%d):", this->currentStatus);
+        lastDebugTime = millis();
     }
 
+    dateTimeSetting->update();
+    //switch (this->currentStatus)
+    // {
+    //     case USER_INTERFACE_STATUS_OFF:{
+            
+    //         break;
+    //     }
+    //     case USER_INTERFACE_STATUS_USING_MENU:{
+    //         break;
+    //     }
+
+    //     case USER_INTERFACE_STATUS_STANDBY:{
+    //         break;
+    //     }    
+    // }
 }
 #pragma endregion
 
@@ -81,13 +84,17 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
         case USER_INTERFACE_STATUS_STANDBY:{
                 if(key == Keys::KEY_ENTER){
                     me->currentStatus = USER_INTERFACE_STATUS_USING_MENU;
-                    me->processMenu(Keys::KEY_BACK); //reset                    
+                    me->menu->reset();
+                    me->processMenu(Keys::KEY_NO_KEY);
                 }
             break;
         } 
         case USER_INTERFACE_STATUS_USING_MENU:{
             me->processMenu(key);
             break;
+        }
+        case USER_ACTION_SETTING_DATETIME:{
+            me->processSettingDateTime(key);
         }
     }
 }
@@ -122,6 +129,8 @@ void UserInterface::execMenuClose(void* caller_ptr){
 
 void UserInterface::execSetDateTime(void* caller_ptr){
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
+     me->currentStatus = USER_ACTION_SETTING_DATETIME;
+    //me->dateTimeConfig->init();
 
 }
 
@@ -163,7 +172,12 @@ void UserInterface::processMenu(Keys pressedKey){
                 menu->enter();
                 break;
             case Keys::KEY_BACK:
-                menu->reset();
+                if(menu->isCurrentItemRoot()){
+                    this->currentStatus = USER_INTERFACE_STATUS_STANDBY;
+                    return;
+                }else{
+                    menu->reset();
+                }
                 break;
             case Keys::KEY_UP:
                 menu->moveNext();
@@ -174,6 +188,25 @@ void UserInterface::processMenu(Keys pressedKey){
         };
     MenuItem* item = this->menu->getCurrentItem();
     this->showMenuScreen(item);
+}
+
+void UserInterface::processSettingDateTime(Keys pressedKey){
+        DPRINTLN_F("UserInterface::processSettingDateTime(%d)", pressedKey);
+        switch (pressedKey)
+        {
+            case Keys::KEY_ENTER:
+                dateTimeSetting->next();
+                break;
+            case Keys::KEY_BACK:
+                //cancel
+                this->currentStatus = USER_INTERFACE_STATUS_STANDBY;
+                break;
+            case Keys::KEY_UP:
+                dateTimeSetting->up();
+                break;
+            case Keys::KEY_DOWN:
+                dateTimeSetting->down();                
+        };
 }
 
 void UserInterface::setMenuCallbacks(){

@@ -5,10 +5,12 @@
 #include "Keypad.h"
 #include "WaterProgram.h"
 #include "Menu.h"
+#include "DateTimeSetting.h"
 
 #define USER_INTERFACE_STATUS_OFF 0
 #define USER_INTERFACE_STATUS_STANDBY 1
 #define USER_INTERFACE_STATUS_USING_MENU 2
+#define USER_ACTION_SETTING_DATETIME 3
 
 class UserInterface{
     private:
@@ -35,10 +37,12 @@ class UserInterface{
         static void execSetDateTime(void* caller_ptr);
 
         WaterProgram* wprogram;
+        DateTimeSetting* dateTimeSetting;
 
         void showIdleScreen(int hours, int minutes, int seconds);
         void showMenuScreen(MenuItem* item);
         void processMenu(Keys pressedKey);
+        void processSettingDateTime(Keys pressedKey);
         void setMenuCallbacks();
 
     public:
