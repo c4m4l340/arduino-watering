@@ -24,12 +24,14 @@ class DateTimeSetting{
         void begin();
         void update();
         
-        void init();
+        void initDateTime();
+        void initTime();
         void up();
         void down();
         void next();
 
-        void getSettedValue(int* year, int* month, int* day, int* hour, int* minute);
+        void getSettedDateTime(int* year, int* month, int* day, int* hour, int* minute);
+        void getSettedTime(int* hour, int* minute);
 };
 
 #endif

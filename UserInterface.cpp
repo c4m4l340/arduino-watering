@@ -130,7 +130,7 @@ void UserInterface::execMenuClose(void* caller_ptr){
 void UserInterface::execSetDateTime(void* caller_ptr){
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
      me->currentStatus = USER_ACTION_SETTING_DATETIME;
-    //me->dateTimeConfig->init();
+    me->dateTimeSetting->initDateTime();
 
 }
 

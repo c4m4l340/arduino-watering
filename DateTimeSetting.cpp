@@ -8,7 +8,11 @@ void DateTimeSetting::update(){
 
 }
 
-void DateTimeSetting::init(){
+void DateTimeSetting::initDateTime(){
+
+}
+
+void DateTimeSetting::initTime(){
 
 }
 
