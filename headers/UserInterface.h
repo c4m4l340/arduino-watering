@@ -5,7 +5,7 @@
 #include "Keypad.h"
 #include "WaterProgram.h"
 #include "Menu.h"
-#include "DateTimeSetting.h"
+#include "MenuActionSetDateTime.h"
 
 #define USER_INTERFACE_STATUS_OFF 0
 #define USER_INTERFACE_STATUS_STANDBY 1
@@ -42,7 +42,7 @@ class UserInterface{
         void showIdleScreen(int hours, int minutes, int seconds);
         void showMenuScreen(MenuItem* item);
         void processMenu(Keys pressedKey);
-        void processSettingDateTime(Keys pressedKey);
+        void processAction(Keys pressedKey);
         void setMenuCallbacks();
 
     public:

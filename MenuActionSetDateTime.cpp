@@ -1,12 +1,13 @@
 #include "headers\MenuActionBase.h"
-#include "headers\DateTimeSetting.h"
+#include "headers\MenuActionSetDateTime.h"
 #include "headers\Lcd.h"
 
-DateTimeSetting::DateTimeSetting(Lcd* lcd): MenuActionBase(lcd)
+MenuActionSetDateTime::MenuActionSetDateTime(Lcd* lcd): MenuActionBase()
 {
+    this->lcd = lcd;
 }
 
-void DateTimeSetting::begin()
+void MenuActionSetDateTime::begin()
 {
     year = 2020;
     month = 1;
@@ -16,7 +17,7 @@ void DateTimeSetting::begin()
     minute = 0;
 }
 
-void DateTimeSetting::update()
+void MenuActionSetDateTime::update()
 {
     if (millis() - lastBlinkUpdateTime > 500)
     {
@@ -25,7 +26,7 @@ void DateTimeSetting::update()
     }
 }
 
-void DateTimeSetting::initDateTime()
+void MenuActionSetDateTime::initDateTime()
 {
     lcd->writeLn(1, 0, "                \0");
     setDate = true;
@@ -34,7 +35,7 @@ void DateTimeSetting::initDateTime()
     currentStatus = DATETIMESETTING_YEAR;
 }
 
-void DateTimeSetting::initTime()
+void MenuActionSetDateTime::initTime()
 {
     lcd->writeLn(1, 0, "                \0");
     setDate = false;
@@ -43,7 +44,7 @@ void DateTimeSetting::initTime()
     currentStatus = DATETIMESETTING_HOUR;
 }
 
-void DateTimeSetting::keyEnter()
+void MenuActionSetDateTime::keyEnter()
 {
     switch (currentStatus)
     {
@@ -67,7 +68,7 @@ void DateTimeSetting::keyEnter()
     }
 }
 
-void DateTimeSetting::keyUp()
+void MenuActionSetDateTime::keyUp()
 {
     switch (currentStatus)
     {
@@ -101,7 +102,7 @@ void DateTimeSetting::keyUp()
     }
 }
 
-void DateTimeSetting::keyDown()
+void MenuActionSetDateTime::keyDown()
 {
     switch (currentStatus)
     {
@@ -135,11 +136,11 @@ void DateTimeSetting::keyDown()
     }
 }
 
-void DateTimeSetting::keyBack(){
+void MenuActionSetDateTime::keyBack(){
 
 }
 
-void DateTimeSetting::blink()
+void MenuActionSetDateTime::blink()
 {
     blinkOn = !blinkOn;
 

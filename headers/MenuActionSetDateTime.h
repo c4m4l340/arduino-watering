@@ -1,5 +1,5 @@
-#ifndef __DATE_TIME_SETTING__
-#define __DATE_TIME_SETTING__
+#ifndef __ACTION_SET_DATETIME__
+#define __ACTION_SET_DATETIME__
 
 #include "MenuActionBase.h"
 #include "Lcd.h"
@@ -10,7 +10,7 @@
 #define DATETIMESETTING_HOUR 3
 #define DATETIMESETTING_MINUTE 4
 
-class DateTimeSetting: public MenuActionBase{
+class MenuActionSetDateTime: public MenuActionBase{
 
     private:
         Lcd* lcd;
@@ -39,7 +39,7 @@ class DateTimeSetting: public MenuActionBase{
         void keyEnter();
         void keyBack();
 
-        DateTimeSetting(Lcd* lcd);
+        MenuActionSetDateTime(Lcd* lcd);
 
         void initDateTime();
         void initTime();

@@ -3,7 +3,7 @@
 
 #include "Lcd.h"
 
-using ActioncCompleteCallback = void (*)(void* caller_ptr);
+using ActioncCompleteCallback = void (*)(void* data, void* caller_ptr);
 using ActionCanceledCallback = void (*)(void* caller_ptr);
 
 class MenuActionBase{
@@ -16,7 +16,7 @@ class MenuActionBase{
         ActionCanceledCallback onActionCanceled = NULL;
         void* callerCallbackInstance = NULL;
 
-        MenuActionBase(Lcd* lcd){ this->lcd = lcd;};
+        MenuActionBase(){};
 
         virtual void begin() = 0;
         virtual void update() = 0;

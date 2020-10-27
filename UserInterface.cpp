@@ -4,7 +4,7 @@
 #include "headers\UserInterface.h"
 #include "headers\Lcd.h"
 #include "headers\Keypad.h"
-#include "headers\DateTimeSetting.h"
+#include "headers\MenuActionSetDateTime.h"
 #include <WString.h>
 
 UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram* wprogram){
@@ -94,7 +94,7 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
             break;
         }
         case USER_INTERFACE_EXEC_ACTION:{
-            me->processSettingDateTime(key);
+            me->processAction(key);
         }
     }
 }
@@ -130,7 +130,7 @@ void UserInterface::execMenuClose(void* caller_ptr){
 void UserInterface::execSetDateTime(void* caller_ptr){
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
      me->currentStatus = USER_INTERFACE_EXEC_ACTION;
-     DateTimeSetting* action = new DateTimeSetting(me->lcd); 
+     MenuActionSetDateTime* action = new MenuActionSetDateTime(me->lcd); 
      action->begin();
      action->initDateTime();
      me->menuAction = action;
@@ -192,7 +192,7 @@ void UserInterface::processMenu(Keys pressedKey){
     this->showMenuScreen(item);
 }
 
-void UserInterface::processSettingDateTime(Keys pressedKey){
+void UserInterface::processAction(Keys pressedKey){
         DPRINTLN_F("UserInterface::processSettingDateTime(%d)", pressedKey);
         switch (pressedKey)
         {
