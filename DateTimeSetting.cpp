@@ -1,8 +1,9 @@
+#include "headers\MenuActionBase.h"
 #include "headers\DateTimeSetting.h"
 #include "headers\Lcd.h"
-DateTimeSetting::DateTimeSetting(Lcd *lcd)
+
+DateTimeSetting::DateTimeSetting(Lcd* lcd): MenuActionBase(lcd)
 {
-    this->lcd = lcd;
 }
 
 void DateTimeSetting::begin()
@@ -42,7 +43,7 @@ void DateTimeSetting::initTime()
     currentStatus = DATETIMESETTING_HOUR;
 }
 
-void DateTimeSetting::next()
+void DateTimeSetting::keyEnter()
 {
     switch (currentStatus)
     {
@@ -66,7 +67,7 @@ void DateTimeSetting::next()
     }
 }
 
-void DateTimeSetting::up()
+void DateTimeSetting::keyUp()
 {
     switch (currentStatus)
     {
@@ -100,7 +101,7 @@ void DateTimeSetting::up()
     }
 }
 
-void DateTimeSetting::down()
+void DateTimeSetting::keyDown()
 {
     switch (currentStatus)
     {
@@ -132,6 +133,10 @@ void DateTimeSetting::down()
         }
         break;
     }
+}
+
+void DateTimeSetting::keyBack(){
+
 }
 
 void DateTimeSetting::blink()

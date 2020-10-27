@@ -12,7 +12,7 @@ UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram*
     this->keypad = keypad;
     this->menu = menu;
     this->wprogram = wprogram;
-    this->dateTimeSetting = new DateTimeSetting(this->lcd);
+    //this->menuAction = new DateTimeSetting(this->lcd);
 }
 
 #pragma region Task setup and run
@@ -28,8 +28,6 @@ void UserInterface::begin(){
     lcd->callerCallbackInstance = this;
 
     setMenuCallbacks();
-
-    dateTimeSetting->begin();
 }
 
 void UserInterface::update(){
@@ -50,8 +48,8 @@ void UserInterface::update(){
         case USER_INTERFACE_STATUS_STANDBY:{
             break;
         }    
-        case USER_ACTION_SETTING_DATETIME:{
-            dateTimeSetting->update();
+        case USER_INTERFACE_EXEC_ACTION:{
+            this->menuAction->update();
             break;
         }
     }
@@ -95,7 +93,7 @@ void UserInterface::onKeyUp(int key, void* caller_ptr){
             me->processMenu(key);
             break;
         }
-        case USER_ACTION_SETTING_DATETIME:{
+        case USER_INTERFACE_EXEC_ACTION:{
             me->processSettingDateTime(key);
         }
     }
@@ -131,9 +129,11 @@ void UserInterface::execMenuClose(void* caller_ptr){
 
 void UserInterface::execSetDateTime(void* caller_ptr){
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
-     me->currentStatus = USER_ACTION_SETTING_DATETIME;
-    me->dateTimeSetting->initDateTime();
-
+     me->currentStatus = USER_INTERFACE_EXEC_ACTION;
+     DateTimeSetting* action = new DateTimeSetting(me->lcd); 
+     action->begin();
+     action->initDateTime();
+     me->menuAction = action;
 }
 
 #pragma endregion
@@ -197,17 +197,17 @@ void UserInterface::processSettingDateTime(Keys pressedKey){
         switch (pressedKey)
         {
             case Keys::KEY_ENTER:
-                dateTimeSetting->next();
+                menuAction->keyEnter();
                 break;
             case Keys::KEY_BACK:
                 //cancel
                 this->currentStatus = USER_INTERFACE_STATUS_STANDBY;
                 break;
             case Keys::KEY_UP:
-                dateTimeSetting->up();
+                menuAction->keyUp();
                 break;
             case Keys::KEY_DOWN:
-                dateTimeSetting->down();                
+                menuAction->keyDown();                
         };
 }
 

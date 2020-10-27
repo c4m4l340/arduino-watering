@@ -1,6 +1,7 @@
 #ifndef __DATE_TIME_SETTING__
 #define __DATE_TIME_SETTING__
 
+#include "MenuActionBase.h"
 #include "Lcd.h"
 
 #define DATETIMESETTING_YEAR 0
@@ -9,7 +10,7 @@
 #define DATETIMESETTING_HOUR 3
 #define DATETIMESETTING_MINUTE 4
 
-class DateTimeSetting{
+class DateTimeSetting: public MenuActionBase{
 
     private:
         Lcd* lcd;
@@ -29,17 +30,19 @@ class DateTimeSetting{
 
         void blink();
     public:
-        DateTimeSetting(Lcd* lcd);
 
         void begin();
         void update();
-        
+
+        void keyUp();
+        void keyDown();
+        void keyEnter();
+        void keyBack();
+
+        DateTimeSetting(Lcd* lcd);
+
         void initDateTime();
         void initTime();
-        void up();
-        void down();
-        void next();
-
         void getSettedDateTime(int* year, int* month, int* day, int* hour, int* minute);
         void getSettedTime(int* hour, int* minute);
 };

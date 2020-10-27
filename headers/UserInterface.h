@@ -10,7 +10,7 @@
 #define USER_INTERFACE_STATUS_OFF 0
 #define USER_INTERFACE_STATUS_STANDBY 1
 #define USER_INTERFACE_STATUS_USING_MENU 2
-#define USER_ACTION_SETTING_DATETIME 3
+#define USER_INTERFACE_EXEC_ACTION 3
 
 class UserInterface{
     private:
@@ -37,7 +37,7 @@ class UserInterface{
         static void execSetDateTime(void* caller_ptr);
 
         WaterProgram* wprogram;
-        DateTimeSetting* dateTimeSetting;
+        MenuActionBase* menuAction;
 
         void showIdleScreen(int hours, int minutes, int seconds);
         void showMenuScreen(MenuItem* item);
@@ -51,8 +51,6 @@ class UserInterface{
         void update();
 
         void pushTime(int hours, int minutes, int seconds);
-
-        
 };
 
 #endif
