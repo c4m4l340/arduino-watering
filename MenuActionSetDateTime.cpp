@@ -2,19 +2,14 @@
 #include "headers\MenuActionSetDateTime.h"
 #include "headers\Lcd.h"
 
-MenuActionSetDateTime::MenuActionSetDateTime(Lcd *lcd) : MenuActionBase()
+MenuActionSetDateTime::MenuActionSetDateTime() : MenuActionBase()
 {
-    this->lcd = lcd;
+    
 }
 
-void MenuActionSetDateTime::begin()
+void MenuActionSetDateTime::begin(Lcd* lcd)
 {
-    year = 2020;
-    month = 1;
-    day = 1;
-
-    hour = 0;
-    minute = 0;
+    this->lcd = lcd;
 }
 
 void MenuActionSetDateTime::update()
@@ -28,20 +23,31 @@ void MenuActionSetDateTime::update()
 
 void MenuActionSetDateTime::initDateTime()
 {
-    lcd->writeLn(1, 0, "                \0");
-    setDate = true;
-    setTime = true;
-    blinkOn = false;
-    currentStatus = DATETIMESETTING_YEAR;
+    setDateTime = true;
 }
 
 void MenuActionSetDateTime::initTime()
 {
+    setDateTime = false;
+}
+
+void MenuActionSetDateTime::reset(){
+        
+    year = 2020;
+    month = 1;
+    day = 1;
+
+    hour = 0;
+    minute = 0;
+
     lcd->writeLn(1, 0, "                \0");
-    setDate = false;
-    setTime = true;
     blinkOn = false;
-    currentStatus = DATETIMESETTING_HOUR;
+    
+    if(setDateTime){
+        currentStatus = DATETIMESETTING_YEAR;
+    }else{
+        currentStatus = DATETIMESETTING_HOUR;
+    }
 }
 
 void MenuActionSetDateTime::keyEnter()

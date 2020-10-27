@@ -21,7 +21,7 @@ class MenuActionSetDateTime: public MenuActionBase{
         int hour;
         int minute;
         
-        bool setDate;
+        bool setDateTime;
         bool setTime;
 
         int currentStatus;
@@ -31,15 +31,16 @@ class MenuActionSetDateTime: public MenuActionBase{
         void blink();
     public:
 
-        void begin();
+        void begin(Lcd* lcd);
         void update();
 
+        void reset();
         void keyUp();
         void keyDown();
         void keyEnter();
         void keyBack();
 
-        MenuActionSetDateTime(Lcd* lcd);
+        MenuActionSetDateTime();
 
         void initDateTime();
         void initTime();

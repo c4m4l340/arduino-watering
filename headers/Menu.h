@@ -4,10 +4,12 @@
 #define _MENU_h
 
 #include "Arduino.h"
+#include "MenuActionBase.h"
 
-using ActionCallback = void (*)(void* caller_ptr);
+using ActionCallback = void (*)(MenuActionBase* menuAction, void* caller_ptr);
 struct MenuItem {
 	ActionCallback action;
+	MenuActionBase* menuAction;
 	String title;
 	int childsCount;
 	MenuItem *childs;
@@ -15,10 +17,6 @@ struct MenuItem {
 	bool hasChildren() {
 		return childs!=NULL;
 	};
-
-	void setAction(ActionCallback action){
-		this->action = action;
-	}
 };
 
 

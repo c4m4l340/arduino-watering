@@ -53,9 +53,8 @@ void Menu::enter() {
 		currentItem = currentItem->childs;
 	}else{
 		if(currentItem->action != NULL){
-			currentItem->action(callerCallbackInstance);
+			currentItem->action(currentItem->menuAction, callerCallbackInstance);
 		}
-
 	}
 }
 

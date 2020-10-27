@@ -18,9 +18,9 @@ class MenuActionBase{
 
         MenuActionBase(){};
 
-        virtual void begin() = 0;
+        virtual void begin(Lcd* lcd) = 0;
         virtual void update() = 0;
-
+        virtual void reset () = 0;
         virtual void keyUp() = 0;
         virtual void keyDown() = 0;
         virtual void keyEnter() = 0;
