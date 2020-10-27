@@ -2,7 +2,7 @@
 #include "headers\MenuActionSetDateTime.h"
 #include "headers\Lcd.h"
 
-MenuActionSetDateTime::MenuActionSetDateTime(Lcd* lcd): MenuActionBase()
+MenuActionSetDateTime::MenuActionSetDateTime(Lcd *lcd) : MenuActionBase()
 {
     this->lcd = lcd;
 }
@@ -61,7 +61,11 @@ void MenuActionSetDateTime::keyEnter()
         currentStatus = DATETIMESETTING_MINUTE;
         break;
     case DATETIMESETTING_MINUTE:
-        //??currentStatus = DATETIMESETTING_MINUTE;
+        currentStatus = DATETIMESETTING_YEAR;
+        if (onActioncComplete != NULL)
+        {
+            onActioncComplete(NULL, callerCallbackInstance);
+        }
         break;
     default:
         break;
@@ -116,7 +120,7 @@ void MenuActionSetDateTime::keyDown()
         }
         break;
     case DATETIMESETTING_DAY:
-        if (--day <  1)
+        if (--day < 1)
         {
             day = 31;
         }
@@ -136,8 +140,12 @@ void MenuActionSetDateTime::keyDown()
     }
 }
 
-void MenuActionSetDateTime::keyBack(){
-
+void MenuActionSetDateTime::keyBack()
+{
+    if (onActionCanceled != NULL)
+    {
+        onActionCanceled(callerCallbackInstance);
+    }
 }
 
 void MenuActionSetDateTime::blink()

@@ -12,7 +12,6 @@ UserInterface::UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram*
     this->keypad = keypad;
     this->menu = menu;
     this->wprogram = wprogram;
-    //this->menuAction = new DateTimeSetting(this->lcd);
 }
 
 #pragma region Task setup and run
@@ -117,6 +116,18 @@ void UserInterface::onLcdWakeup(void* caller_ptr){
      DPRINTLN("UserInterface::onLcdWakeup");
 }
 
+void UserInterface::onActionComplete(void* data, void* caller_ptr){
+    UserInterface* me = static_cast<UserInterface*>(caller_ptr);
+    me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
+    DPRINTLN("UserInterface::onActionComplete");
+}
+
+void UserInterface::onActionCanceled (void* caller_ptr){
+    UserInterface* me = static_cast<UserInterface*>(caller_ptr);
+    me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
+    DPRINTLN("UserInterface::onActionCanceled");
+}
+
 void UserInterface::execMenuOpen(void* caller_ptr){
     UserInterface* me = static_cast<UserInterface*>(caller_ptr);
     me->wprogram->open();
@@ -133,6 +144,9 @@ void UserInterface::execSetDateTime(void* caller_ptr){
      MenuActionSetDateTime* action = new MenuActionSetDateTime(me->lcd); 
      action->begin();
      action->initDateTime();
+     action->callerCallbackInstance = me;
+     action->onActioncComplete = onActionComplete;
+     action->onActionCanceled = onActionCanceled;
      me->menuAction = action;
 }
 
@@ -201,7 +215,7 @@ void UserInterface::processAction(Keys pressedKey){
                 break;
             case Keys::KEY_BACK:
                 //cancel
-                this->currentStatus = USER_INTERFACE_STATUS_STANDBY;
+                menuAction->keyBack();
                 break;
             case Keys::KEY_UP:
                 menuAction->keyUp();

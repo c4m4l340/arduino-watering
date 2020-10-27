@@ -36,6 +36,9 @@ class UserInterface{
         static void execMenuClose(void* caller_ptr);
         static void execSetDateTime(void* caller_ptr);
 
+        static void onActionComplete (void* data, void* caller_ptr);
+        static void onActionCanceled (void* caller_ptr);
+
         WaterProgram* wprogram;
         MenuActionBase* menuAction;
 
