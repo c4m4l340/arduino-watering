@@ -6,10 +6,9 @@
 #include "Arduino.h"
 #include "MenuActionBase.h"
 
-using ActionCallback = void (*)(MenuActionBase* menuAction, void* caller_ptr);
+using ActionCallback = void (*)(void* caller_ptr);
 struct MenuItem {
-	ActionCallback action;
-	MenuActionBase* menuAction;
+	ActionCallback callback;
 	String title;
 	byte childsCount;
 	MenuItem *childs;

@@ -18,7 +18,7 @@ void Menu::update(){
 		lastUpdateTime = millis();
 		 DPRINTLN_F("Menu::update(currentItem:%p, count:%d, childs:%d, isRoot:%d, action:%p, call_ptr:%p)", 
 		 currentItem, currentLevelItemsCount, currentItem->hasChildren(), 
-		 isCurrentItemRoot(), currentItem->action, this->callerCallbackInstance);
+		 isCurrentItemRoot(), currentItem->callback, this->callerCallbackInstance);
 	}
 }
 
@@ -52,8 +52,8 @@ void Menu::enter() {
 		currentLevelItemsCount = currentItem->childsCount;
 		currentItem = currentItem->childs;
 	}else{
-		if(currentItem->action != NULL){
-			currentItem->action(currentItem->menuAction, callerCallbackInstance);
+		if(currentItem->callback != NULL){
+			currentItem->callback(callerCallbackInstance);
 		}
 	}
 }

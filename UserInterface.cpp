@@ -28,7 +28,19 @@ void UserInterface::begin()
     lcd->onWakeup = onLcdWakeup;
     lcd->callerCallbackInstance = this;
 
-    setMenuCallbacks();
+    menuActionSetDateTime->begin(this->lcd);
+    menuActionSetDateTime->callerCallbackInstance = this;
+    menuActionSetDateTime->onActioncComplete = onActionComplete;
+    menuActionSetDateTime->onActionCanceled = onActionCanceled;
+
+    //get root item
+    menu->callerCallbackInstance = this;
+    menu->reset();
+    MenuItem *root = menu->getCurrentItem();
+    (root + 0)->callback = execMenuOpen;
+    (root + 1)->callback = execMenuClose;
+    (root + 2)->callback = execMenuActionSetDateTime;
+
 }
 
 void UserInterface::update()
@@ -56,7 +68,7 @@ void UserInterface::update()
     }
     case USER_INTERFACE_EXEC_ACTION:
     {
-        this->menuAction->update();
+        this->currentMenuAction->update();
         break;
     }
     }
@@ -149,24 +161,25 @@ void UserInterface::onActionCanceled(void *caller_ptr)
     DPRINTLN("UserInterface::onActionCanceled");
 }
 
-void UserInterface::execMenuOpen(MenuActionBase *menuAction, void *caller_ptr)
+void UserInterface::execMenuOpen(void *caller_ptr)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->wprogram->open();
 }
 
-void UserInterface::execMenuClose(MenuActionBase *menuAction, void *caller_ptr)
+void UserInterface::execMenuClose(void *caller_ptr)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->wprogram->abort();
 }
 
-void UserInterface::exeMenuAction(MenuActionBase *menuAction, void *caller_ptr)
+void UserInterface::execMenuActionSetDateTime(void *caller_ptr)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->currentStatus = USER_INTERFACE_EXEC_ACTION;
-    menuAction->reset();
-    me->menuAction = menuAction;
+    me->menuActionSetDateTime->initDateTime();
+    me->currentMenuAction = me->menuActionSetDateTime;
+    me->currentMenuAction->reset();
 }
 
 #pragma endregion
@@ -236,36 +249,23 @@ void UserInterface::processAction(Keys pressedKey)
     switch (pressedKey)
     {
     case Keys::KEY_ENTER:
-        menuAction->keyEnter();
+        currentMenuAction->keyEnter();
         break;
     case Keys::KEY_BACK:
         //cancel
-        menuAction->keyBack();
+        currentMenuAction->keyBack();
         break;
     case Keys::KEY_UP:
-        menuAction->keyUp();
+        currentMenuAction->keyUp();
         break;
     case Keys::KEY_DOWN:
-        menuAction->keyDown();
+        currentMenuAction->keyDown();
     };
 }
 
 void UserInterface::setMenuCallbacks()
 {
-    //get root item
-    menu->callerCallbackInstance = this;
-    menu->reset();
-    MenuItem *root = menu->getCurrentItem();
-    (root + 0)->action = execMenuOpen;
-    (root + 1)->action = execMenuClose;
-    //SetDatetime
-    (root + 2)->action = exeMenuAction;
-    (root + 2)->menuAction->begin(this->lcd);
-    ((MenuActionSetDateTime *)(root + 2)->menuAction)->initDateTime();
-    (root + 2)->menuAction->callerCallbackInstance = this;
-    (root + 2)->menuAction->onActioncComplete = onActionComplete;
-    (root + 2)->menuAction->onActionCanceled = onActionCanceled;
-
+   
 
 
 }

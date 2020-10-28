@@ -32,15 +32,16 @@ class UserInterface{
         Menu* menu;
         //MenuItem* currentMenuItem = NULL;
         //MenuItem* previousMenuItem = NULL;
-        static void execMenuOpen(MenuActionBase *menuAction, void* caller_ptr);
-        static void execMenuClose(MenuActionBase *menuAction, void* caller_ptr);
-        static void exeMenuAction(MenuActionBase* menuAction, void* caller_ptr);
+        static void execMenuOpen(void* caller_ptr);
+        static void execMenuClose(void* caller_ptr);
+        static void execMenuActionSetDateTime(void* caller_ptr);
 
         static void onActionComplete (void* data, void* caller_ptr);
         static void onActionCanceled (void* caller_ptr);
 
         WaterProgram* wprogram;
-        MenuActionBase* menuAction;
+        MenuActionBase* currentMenuAction;
+        MenuActionSetDateTime* menuActionSetDateTime = new MenuActionSetDateTime;
 
         void showIdleScreen(byte hours, byte minutes, byte seconds);
         void showMenuScreen(MenuItem* item);
