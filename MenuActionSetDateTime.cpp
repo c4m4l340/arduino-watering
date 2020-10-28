@@ -4,10 +4,9 @@
 
 MenuActionSetDateTime::MenuActionSetDateTime() : MenuActionBase()
 {
-    
 }
 
-void MenuActionSetDateTime::begin(Lcd* lcd)
+void MenuActionSetDateTime::begin(Lcd *lcd)
 {
     this->lcd = lcd;
 }
@@ -21,18 +20,23 @@ void MenuActionSetDateTime::update()
     }
 }
 
-void MenuActionSetDateTime::initDateTime()
+void MenuActionSetDateTime::initSetDateTime()
 {
     setDateTime = true;
+    setScheduler = false;
 }
 
-void MenuActionSetDateTime::initTime()
+void MenuActionSetDateTime::initSetScheduler()
 {
     setDateTime = false;
+    setScheduler = true;
 }
 
-void MenuActionSetDateTime::reset(){
-        
+void MenuActionSetDateTime::reset(byte tag)
+{
+
+    this->tag = tag;
+
     year = 2020;
     month = 1;
     day = 1;
@@ -40,12 +44,17 @@ void MenuActionSetDateTime::reset(){
     hour = 0;
     minute = 0;
 
+    duration = 5;
+
     lcd->writeLn(1, 0, "                \0");
     blinkOn = false;
-    
-    if(setDateTime){
+
+    if (setDateTime)
+    {
         currentStatus = DATETIMESETTING_YEAR;
-    }else{
+    }
+    else
+    {
         currentStatus = DATETIMESETTING_HOUR;
     }
 }
@@ -67,10 +76,16 @@ void MenuActionSetDateTime::keyEnter()
         currentStatus = DATETIMESETTING_MINUTE;
         break;
     case DATETIMESETTING_MINUTE:
+        if (setScheduler)
+        {
+            currentStatus = DATETIMESETTING_DURATION;
+            break;
+        } //else fall down
+    case DATETIMESETTING_DURATION:
         currentStatus = DATETIMESETTING_YEAR;
         if (onActioncComplete != NULL)
         {
-            onActioncComplete(NULL, callerCallbackInstance);
+            onActioncComplete(NULL, callerCallbackInstance, tag);
         }
         break;
     default:
@@ -109,6 +124,12 @@ void MenuActionSetDateTime::keyUp()
             minute = 00;
         }
         break;
+    case DATETIMESETTING_DURATION:
+        if (++duration > 60)
+        {
+            duration = 00;
+        }
+        break;
     }
 }
 
@@ -132,17 +153,25 @@ void MenuActionSetDateTime::keyDown()
         }
         break;
     case DATETIMESETTING_HOUR:
-        if (--hour < 00)
+        if (hour == 00)
         {
-            hour = 23;
+            hour = 24;
         }
+        hour--;
         break;
     case DATETIMESETTING_MINUTE:
-        if (--minute < 00)
+        if (minute == 00)
         {
-            minute = 59;
+            minute = 60;
         }
+        minute--;
         break;
+    case DATETIMESETTING_DURATION:
+        if (duration == 00)
+        {
+            duration = 61;
+        }
+        duration--;
     }
 }
 
@@ -150,7 +179,7 @@ void MenuActionSetDateTime::keyBack()
 {
     if (onActionCanceled != NULL)
     {
-        onActionCanceled(callerCallbackInstance);
+        onActionCanceled(callerCallbackInstance, tag);
     }
 }
 
@@ -184,21 +213,21 @@ void MenuActionSetDateTime::blink()
     case DATETIMESETTING_DAY:
         if (blinkOn)
         {
-            sprintf(line, "Day:%d   \0", day);
+            sprintf(line, "Day:%d  \0", day);
         }
         else
         {
-            sprintf(line, "Day:     \0");
+            sprintf(line, "Day:    \0");
         }
         break;
     case DATETIMESETTING_HOUR:
         if (blinkOn)
         {
-            sprintf(line, "Hour:%d  \0", hour);
+            sprintf(line, "Hour:%d \0", hour);
         }
         else
         {
-            sprintf(line, "Hour:    \0");
+            sprintf(line, "Hour:   \0");
         }
         break;
     case DATETIMESETTING_MINUTE:
@@ -211,8 +240,28 @@ void MenuActionSetDateTime::blink()
             sprintf(line, "Minute:  \0");
         }
         break;
+    case DATETIMESETTING_DURATION:
+        if (blinkOn)
+        {
+            sprintf(line, "Duration:%d\0", duration);
+        }
+        else
+        {
+            sprintf(line, "Duration:  \0");
+        }
+        break;
+
     default:
         break;
     };
     lcd->writeLn(1, 0, line);
+}
+
+void MenuActionSetDateTime::getSettedDateTime(int &year, byte &month, byte &day, byte &hour, byte &minute)
+{
+    year = this->year;
+    month=this->month;
+    day=this->day;
+    hour=this->hour;
+    minute=this->minute;
 }

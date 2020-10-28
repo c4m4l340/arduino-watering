@@ -9,6 +9,7 @@
 #define DATETIMESETTING_DAY 2
 #define DATETIMESETTING_HOUR 3
 #define DATETIMESETTING_MINUTE 4
+#define DATETIMESETTING_DURATION 5
 
 class MenuActionSetDateTime: public MenuActionBase{
 
@@ -20,9 +21,10 @@ class MenuActionSetDateTime: public MenuActionBase{
         byte day;
         byte hour;
         byte minute;
-        
+        byte duration;
+
         bool setDateTime;
-        bool setTime;
+        bool setScheduler;
 
         byte currentStatus;
         long lastBlinkUpdateTime;
@@ -34,7 +36,7 @@ class MenuActionSetDateTime: public MenuActionBase{
         void begin(Lcd* lcd);
         void update();
 
-        void reset();
+        void reset(byte tag);
         void keyUp();
         void keyDown();
         void keyEnter();
@@ -42,10 +44,10 @@ class MenuActionSetDateTime: public MenuActionBase{
 
         MenuActionSetDateTime();
 
-        void initDateTime();
-        void initTime();
-        void getSettedDateTime(int* year, int* month, int* day, int* hour, int* minute);
-        void getSettedTime(int* hour, int* minute);
+        void initSetDateTime();
+        void initSetScheduler();
+        void getSettedDateTime(int &year, byte &month, byte &day, byte &hour, byte &minute);
+        void getSettedTime(byte* hour, byte* minute);
 };
 
 #endif

@@ -53,7 +53,7 @@ void Menu::enter() {
 		currentItem = currentItem->childs;
 	}else{
 		if(currentItem->callback != NULL){
-			currentItem->callback(callerCallbackInstance);
+			currentItem->callback(callerCallbackInstance, currentItem->index);
 		}
 	}
 }

@@ -6,13 +6,14 @@
 #include "Arduino.h"
 #include "MenuActionBase.h"
 
-using ActionCallback = void (*)(void* caller_ptr);
+using ActionCallback = void (*)(void* caller_ptr, byte index);
 struct MenuItem {
+	byte index;
 	ActionCallback callback;
 	String title;
 	byte childsCount;
 	MenuItem *childs;
-
+	
 	bool hasChildren() {
 		return childs!=NULL;
 	};

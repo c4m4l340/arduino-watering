@@ -20,24 +20,24 @@
 // };
 
 MenuItem itemsCheckSensors[] = {
-	{ NULL,"Check Addr 1",0, NULL },
-	{ NULL,"Check Addr 2",0, NULL }
+	{0, NULL,"Check Addr 1",0, NULL },
+	{1, NULL,"Check Addr 2",0, NULL }
 };
 
  MenuItem itemsPrograms[] = {
- 	{ NULL,"Program 1",0, NULL },
- 	{ NULL,"Program 2",0, NULL },
-	{ NULL,"Program 3",0, NULL },
-	{ NULL,"Program 4",0, NULL },
+ 	{0, NULL,"Scheduler 1",0, NULL },
+ 	{1, NULL,"Scheduler 2",0, NULL },
+	{2, NULL,"Scheduler 3",0, NULL },
+	{3, NULL,"Scheduler 4",0, NULL },
 };
 
 MenuItem itemsRoot[] = {
-	{ NULL,"Open", 0, NULL},
-    { NULL,"Stop", 0, NULL},
+	{0, NULL,"Open", 0, NULL},
+    {1, NULL,"Stop", 0, NULL},
 	//{ NULL, "Run Mode", 0, NULL},
-    { NULL,"Date/Time", 0, NULL},
-    { NULL, "Programs", sizeof(itemsPrograms) / sizeof(MenuItem), itemsPrograms},
-	{ NULL,"Check Sensors", sizeof(itemsCheckSensors) / sizeof(MenuItem), itemsCheckSensors}
+    {2, NULL,"Date/Time", 0, NULL},
+    {3, NULL,"Schedulers", sizeof(itemsPrograms) / sizeof(MenuItem), itemsPrograms},
+	{4, NULL,"Check Sensors", sizeof(itemsCheckSensors) / sizeof(MenuItem), itemsCheckSensors}
 };
 
 

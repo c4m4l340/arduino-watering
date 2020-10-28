@@ -3,8 +3,8 @@
 
 #include "Lcd.h"
 
-using ActioncCompleteCallback = void (*)(void* data, void* caller_ptr);
-using ActionCanceledCallback = void (*)(void* caller_ptr);
+using ActioncCompleteCallback = void (*)(void* data, void* caller_ptr, byte tag);
+using ActionCanceledCallback = void (*)(void* caller_ptr, byte tag);
 
 class MenuActionBase{
 
@@ -12,6 +12,8 @@ class MenuActionBase{
         Lcd* lcd;
 
     public:
+        byte tag;
+        
         ActioncCompleteCallback onActioncComplete= NULL;
         ActionCanceledCallback onActionCanceled = NULL;
         void* callerCallbackInstance = NULL;
@@ -20,7 +22,7 @@ class MenuActionBase{
 
         virtual void begin(Lcd* lcd) = 0;
         virtual void update() = 0;
-        virtual void reset () = 0;
+        virtual void reset (byte tag) = 0;
         virtual void keyUp() = 0;
         virtual void keyDown() = 0;
         virtual void keyEnter() = 0;

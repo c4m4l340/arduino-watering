@@ -12,6 +12,8 @@
 #define USER_INTERFACE_STATUS_USING_MENU 2
 #define USER_INTERFACE_EXEC_ACTION 3
 
+enum menuTag:byte { setDateTime, setScheduler1, setScheduler2, setScheduler3, setScheduler4};
+
 class UserInterface{
     private:
         byte currentStatus = USER_INTERFACE_STATUS_OFF;
@@ -32,14 +34,19 @@ class UserInterface{
         Menu* menu;
         //MenuItem* currentMenuItem = NULL;
         //MenuItem* previousMenuItem = NULL;
-        static void execMenuOpen(void* caller_ptr);
-        static void execMenuClose(void* caller_ptr);
-        static void execMenuActionSetDateTime(void* caller_ptr);
+        static void execMenuOpen(void* caller_ptr, byte index);
+        static void execMenuClose(void* caller_ptr, byte index);
+        static void execMenuActionSetDateTime(void* caller_ptr, byte index);
+        static void execMenuActionSetScheduler1(void* caller_ptr, byte index);
+        static void execMenuActionSetScheduler2(void* caller_ptr, byte index);
+        static void execMenuActionSetScheduler3(void* caller_ptr, byte index);
+        static void execMenuActionSetScheduler4(void* caller_ptr, byte index);
 
-        static void onActionComplete (void* data, void* caller_ptr);
-        static void onActionCanceled (void* caller_ptr);
+        static void onActionComplete (void* data, void* caller_ptr, byte tag);
+        static void onActionCanceled (void* caller_ptr, byte tag);
 
         WaterProgram* wprogram;
+       
         MenuActionBase* currentMenuAction;
         MenuActionSetDateTime* menuActionSetDateTime = new MenuActionSetDateTime;
 

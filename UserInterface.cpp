@@ -40,7 +40,13 @@ void UserInterface::begin()
     (root + 0)->callback = execMenuOpen;
     (root + 1)->callback = execMenuClose;
     (root + 2)->callback = execMenuActionSetDateTime;
+    //(root + 3) -> Programs
+    (((root + 3)->childs)+0)->callback = execMenuActionSetScheduler1;
+    (((root + 3)->childs)+1)->callback = execMenuActionSetScheduler2;
+    (((root + 3)->childs)+2)->callback = execMenuActionSetScheduler3;
+    (((root + 3)->childs)+3)->callback = execMenuActionSetScheduler4;
 
+    //(root + 4) -> Check Sensors
 }
 
 void UserInterface::update()
@@ -147,39 +153,96 @@ void UserInterface::onLcdWakeup(void *caller_ptr)
     DPRINTLN("UserInterface::onLcdWakeup");
 }
 
-void UserInterface::onActionComplete(void *data, void *caller_ptr)
+void UserInterface::onActionComplete(void *data, void *caller_ptr, byte tag)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
-    DPRINTLN("UserInterface::onActionComplete");
+
+    if(tag == menuTag::setDateTime){
+        int year;
+        byte month;
+        byte day;
+        byte hour;
+        byte minute;        
+        ((MenuActionSetDateTime*)me->currentMenuAction)->getSettedDateTime(
+            year,
+            month,
+            day,
+            hour,
+            minute);
+        DPRINTLN_F("UserInterface::onActionComplete: %d", tag );
+    }
+
+    
 }
 
-void UserInterface::onActionCanceled(void *caller_ptr)
+void UserInterface::onActionCanceled(void *caller_ptr, byte tag)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
     DPRINTLN("UserInterface::onActionCanceled");
+    DPRINTLN_F("UserInterface::onActionComplete: tag:%d", tag);
 }
 
-void UserInterface::execMenuOpen(void *caller_ptr)
+void UserInterface::execMenuOpen(void *caller_ptr, byte index)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->wprogram->open();
 }
 
-void UserInterface::execMenuClose(void *caller_ptr)
+void UserInterface::execMenuClose(void *caller_ptr, byte index)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->wprogram->abort();
 }
 
-void UserInterface::execMenuActionSetDateTime(void *caller_ptr)
+void UserInterface::execMenuActionSetDateTime(void *caller_ptr, byte index)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->currentStatus = USER_INTERFACE_EXEC_ACTION;
-    me->menuActionSetDateTime->initDateTime();
+    me->menuActionSetDateTime->initSetDateTime();
     me->currentMenuAction = me->menuActionSetDateTime;
-    me->currentMenuAction->reset();
+    me->currentMenuAction->reset(menuTag::setDateTime);
+}
+
+void UserInterface::execMenuActionSetScheduler1(void *caller_ptr, byte index)
+{
+    UserInterface *me = static_cast<UserInterface *>(caller_ptr);
+    me->currentStatus = USER_INTERFACE_EXEC_ACTION;
+
+    me->menuActionSetDateTime->initSetScheduler();
+    me->currentMenuAction = me->menuActionSetDateTime;
+    me->currentMenuAction->reset(menuTag::setScheduler1);
+}
+
+void UserInterface::execMenuActionSetScheduler2(void *caller_ptr, byte index)
+{
+    UserInterface *me = static_cast<UserInterface *>(caller_ptr);
+    me->currentStatus = USER_INTERFACE_EXEC_ACTION;
+
+    me->menuActionSetDateTime->initSetScheduler();
+    me->currentMenuAction = me->menuActionSetDateTime;
+    me->currentMenuAction->reset(menuTag::setScheduler2);
+}
+
+void UserInterface::execMenuActionSetScheduler3(void *caller_ptr, byte index)
+{
+    UserInterface *me = static_cast<UserInterface *>(caller_ptr);
+    me->currentStatus = USER_INTERFACE_EXEC_ACTION;
+
+    me->menuActionSetDateTime->initSetScheduler();
+    me->currentMenuAction = me->menuActionSetDateTime;
+    me->currentMenuAction->reset(menuTag::setScheduler3);
+}
+
+void UserInterface::execMenuActionSetScheduler4(void *caller_ptr, byte index)
+{
+    UserInterface *me = static_cast<UserInterface *>(caller_ptr);
+    me->currentStatus = USER_INTERFACE_EXEC_ACTION;
+
+    me->menuActionSetDateTime->initSetScheduler();
+    me->currentMenuAction = me->menuActionSetDateTime;
+    me->currentMenuAction->reset(menuTag::setScheduler4);
 }
 
 #pragma endregion
