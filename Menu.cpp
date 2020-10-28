@@ -3,7 +3,7 @@
 #include "headers\Menu.h"
 #include "headers\SerialDebug.h"
 
-Menu::Menu(MenuItem* root, int size) {
+Menu::Menu(MenuItem* root, byte size) {
 	this->rootItem = root;
 	this->rootItemsCount = size;
 	

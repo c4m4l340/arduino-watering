@@ -42,7 +42,7 @@ class UserInterface{
         WaterProgram* wprogram;
         MenuActionBase* menuAction;
 
-        void showIdleScreen(int hours, int minutes, int seconds);
+        void showIdleScreen(byte hours, byte minutes, byte seconds);
         void showMenuScreen(MenuItem* item);
         void processMenu(Keys pressedKey);
         void processAction(Keys pressedKey);
@@ -53,7 +53,7 @@ class UserInterface{
         void begin();
         void update();
 
-        void pushTime(int hours, int minutes, int seconds);
+        void pushTime(byte hours, byte minutes, byte seconds);
 };
 
 #endif

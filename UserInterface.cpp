@@ -65,7 +65,7 @@ void UserInterface::update()
 
 #pragma region Actions
 
-void UserInterface::pushTime(int hours, int minutes, int seconds)
+void UserInterface::pushTime(byte hours, byte minutes, byte seconds)
 {
     //DPRINTLN_F("UserInterface::pushTime(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);
 
@@ -173,7 +173,7 @@ void UserInterface::exeMenuAction(MenuActionBase *menuAction, void *caller_ptr)
 
 #pragma region Private
 
-void UserInterface::showIdleScreen(int hours, int minutes, int seconds)
+void UserInterface::showIdleScreen(byte hours, byte minutes, byte seconds)
 {
     //DPRINTLN_F("UserInterface::showIdleScreen(%d,%d,%d):currentStatus=%d", hours, minutes, seconds, this->currentStatus);
 
@@ -258,12 +258,15 @@ void UserInterface::setMenuCallbacks()
     MenuItem *root = menu->getCurrentItem();
     (root + 0)->action = execMenuOpen;
     (root + 1)->action = execMenuClose;
-
+    //SetDatetime
     (root + 2)->action = exeMenuAction;
     (root + 2)->menuAction->begin(this->lcd);
     ((MenuActionSetDateTime *)(root + 2)->menuAction)->initDateTime();
     (root + 2)->menuAction->callerCallbackInstance = this;
     (root + 2)->menuAction->onActioncComplete = onActionComplete;
     (root + 2)->menuAction->onActionCanceled = onActionCanceled;
+
+
+
 }
 #pragma endregion

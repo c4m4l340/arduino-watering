@@ -34,7 +34,7 @@ class WaterProgram{
         void runScheduled(); 
 
         //check if is time to run.
-        bool isTimeToRun(int hours, int minutes, int seconds);
+        bool isTimeToRun(byte hours, byte minutes, byte seconds);
     public:
         WaterProgram(LedRgb* led, Communications* comms);
 
@@ -48,7 +48,7 @@ class WaterProgram{
         void abort(); 
 
         // Receive time and check if is time to run
-        void pushTime(int hours, int minutes, int seconds);
+        void pushTime(byte hours, byte minutes, byte seconds);
 };
 
 #endif

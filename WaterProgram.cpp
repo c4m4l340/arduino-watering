@@ -61,7 +61,7 @@ void WaterProgram::abort(){
     } 
 }
 
-void WaterProgram::pushTime(int hours, int minutes, int seconds){
+void WaterProgram::pushTime(byte hours, byte minutes, byte seconds){
      DPRINTLN_F("WaterProgram::pushTime(%d,%d,%d)", hours, minutes, seconds);
 
     if( (currentStatus != WATER_PROGRAM_SCHEDULED_RUNNING) && 
@@ -74,7 +74,7 @@ void WaterProgram::pushTime(int hours, int minutes, int seconds){
 
 #pragma region Private
 
-bool WaterProgram::isTimeToRun(int hours, int minutes, int seconds){
+bool WaterProgram::isTimeToRun(byte hours, byte minutes, byte seconds){
     DPRINTLN("isTimeToRun: return FALSE!!!!!!!");
     return false;
 }

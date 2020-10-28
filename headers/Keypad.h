@@ -38,7 +38,7 @@ using KeyUpCallback = void (*)(int key, void* caller_ptr);
             KeyUpCallback onKeyUp = NULL;
             void* callerCallbackInstance = NULL;
             
-            Keypad(int pin);
+            Keypad(byte pin);
             void begin();
             void update();
     };

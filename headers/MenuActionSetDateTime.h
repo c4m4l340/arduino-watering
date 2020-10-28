@@ -16,17 +16,17 @@ class MenuActionSetDateTime: public MenuActionBase{
         Lcd* lcd;
 
         int year;
-        int month;
-        int day;
-        int hour;
-        int minute;
+        byte month;
+        byte day;
+        byte hour;
+        byte minute;
         
         bool setDateTime;
         bool setTime;
 
-        int currentStatus;
+        byte currentStatus;
         long lastBlinkUpdateTime;
-        int blinkOn;
+        bool blinkOn;
 
         void blink();
     public:

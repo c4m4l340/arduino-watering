@@ -11,7 +11,7 @@ struct MenuItem {
 	ActionCallback action;
 	MenuActionBase* menuAction;
 	String title;
-	int childsCount;
+	byte childsCount;
 	MenuItem *childs;
 
 	bool hasChildren() {
@@ -24,11 +24,11 @@ class Menu {
 
 private:	
 	MenuItem* rootItem;
-	int rootItemsCount;
+	byte rootItemsCount;
 
 	MenuItem* currentItem;
 	MenuItem* currentLevelItems;
-	int currentLevelItemsCount;
+	byte currentLevelItemsCount;
 
 	unsigned long lastUpdateTime=0;
     
@@ -36,7 +36,7 @@ public:
 	void* callerCallbackInstance = NULL;
 	MenuItem* getCurrentItem();
 	
-	Menu(MenuItem* root, int size);
+	Menu(MenuItem* root, byte size);
 	void begin();
 	void update();
 

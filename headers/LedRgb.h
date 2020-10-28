@@ -15,9 +15,9 @@ typedef LedColor BlinkGroup[2];
 class LedRgb {
     private:
         /* OutputPins*/
-        int pinRed;
-        int pinGreen;
-        int pinBlue;
+        byte pinRed;
+        byte pinGreen;
+        byte pinBlue;
 
         /**/
         BlinkGroup colorGroup = {{255,255,255,75},{0,0,0,75}};
@@ -29,7 +29,7 @@ class LedRgb {
         void setColor(LedColor color);
 
     public: 
-        LedRgb(int redPin, int greenPin, int bluePin);
+        LedRgb(byte redPin, byte greenPin, byte bluePin);
         //LedRgb();
         
         void begin();

@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "headers\Keypad.h"
 
-Keypad::Keypad(int pin)
+Keypad::Keypad(byte pin)
 {
     inputPin = pin;
 }

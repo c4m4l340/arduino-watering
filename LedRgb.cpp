@@ -4,7 +4,7 @@
 #include "headers\LedRgb.h"
 
 
-LedRgb::LedRgb(int redPin, int greenPin, int bluePin)
+LedRgb::LedRgb(byte redPin, byte greenPin, byte bluePin)
 {
     pinRed = redPin;
     pinGreen = greenPin;
