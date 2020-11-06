@@ -21,6 +21,8 @@ class Clock{
         void begin();
         void update();
 
+        void setDateTime(int year, int month, int day, int hour, int minute);
+
 };
 
 #endif

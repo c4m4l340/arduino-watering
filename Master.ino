@@ -12,6 +12,7 @@
 #include "headers\WaterProgram.h"
 #include "headers\UserInterface.h"
 #include "headers\MenuItemsSetup.h"
+#include "headers\MenuActionSetDateTime.h"
 
 /* OutputPins*/
 #define PIN_RGB_RED 5
@@ -44,7 +45,7 @@ UserInterface UserInterface(&Lcd, &Keypad, &Menu, &WProgram);
 
 //callback declarations
 void onGetTime(DateTime datetime, void* caller_ptr);
-
+void onSetClock(MenuDateTime* dt, void* caller_ptr);
 
 //ProgramStatus = Standby, ManualRunning, ScheduledRunning
 //CommStatus = Standby, WaitResponse
@@ -65,6 +66,8 @@ void setup(){
     Lcd.begin();
     Keypad.begin();    
     UserInterface.begin();
+    UserInterface.onSetClock = onSetClock;
+    UserInterface.callerCallbackInstance = nullptr;
 }
 
 void loop(){
@@ -88,4 +91,8 @@ void onGetTime(DateTime datetime, void* caller_ptr){
 
     //WProgram.pushTime(datetime.hour(), datetime.minute(), datetime.second());
     UserInterface.pushTime(datetime.hour(), datetime.minute(), datetime.second());
+}
+
+void onSetClock(MenuDateTime* dt, void* caller_ptr){
+     Clock.setDateTime(dt->year, dt->month, dt->day, dt->hour, dt->minute);   
 }

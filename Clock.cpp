@@ -21,3 +21,11 @@ void Clock::update(){
     }
 }
 
+void Clock::setDateTime(int year, int month, int day, int hour, int minute){
+    ds3231.setYear(year - 2000);
+    ds3231.setMonth(month);
+    ds3231.setDate(day);
+    ds3231.setHour(hour);
+    ds3231.setMinute(minute);
+    ds3231.setSecond(0);
+}

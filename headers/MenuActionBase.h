@@ -3,7 +3,7 @@
 
 #include "Lcd.h"
 
-using ActioncCompleteCallback = void (*)(void* data, void* caller_ptr, byte tag);
+using ActioncCompleteCallback = void (*)(void* caller_ptr, byte tag);
 using ActionCanceledCallback = void (*)(void* caller_ptr, byte tag);
 
 class MenuActionBase{

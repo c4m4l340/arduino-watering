@@ -153,35 +153,25 @@ void UserInterface::onLcdWakeup(void *caller_ptr)
     DPRINTLN("UserInterface::onLcdWakeup");
 }
 
-void UserInterface::onActionComplete(void *data, void *caller_ptr, byte tag)
+void UserInterface::onActionComplete(void *caller_ptr, byte tag)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
-    me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
-
-    if(tag == menuTag::setDateTime){
-        int year;
-        byte month;
-        byte day;
-        byte hour;
-        byte minute;        
-        ((MenuActionSetDateTime*)me->currentMenuAction)->getSettedDateTime(
-            year,
-            month,
-            day,
-            hour,
-            minute);
-        DPRINTLN_F("UserInterface::onActionComplete: %d", tag );
+    switch (tag)
+    {
+    case menuTag::setDateTime:
+        me->menuActionSetDateTime->getSettedDateTime(&(me->menuDateTime));
+        if(me->onSetClock != NULL){
+            me->onSetClock(&(me->menuDateTime), me->callerCallbackInstance);
+        }
+        break;
     }
-
-    
+    me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
 }
 
 void UserInterface::onActionCanceled(void *caller_ptr, byte tag)
 {
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
-    DPRINTLN("UserInterface::onActionCanceled");
-    DPRINTLN_F("UserInterface::onActionComplete: tag:%d", tag);
 }
 
 void UserInterface::execMenuOpen(void *caller_ptr, byte index)

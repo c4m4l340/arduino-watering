@@ -11,17 +11,23 @@
 #define DATETIMESETTING_MINUTE 4
 #define DATETIMESETTING_DURATION 5
 
+struct MenuDateTime{
+    int year;
+    byte month;
+    byte day;
+
+    byte hour;
+    byte minute;
+
+    byte duration;
+};
+
 class MenuActionSetDateTime: public MenuActionBase{
 
     private:
         Lcd* lcd;
 
-        int year;
-        byte month;
-        byte day;
-        byte hour;
-        byte minute;
-        byte duration;
+        MenuDateTime datetime = {0,0,0,0,0,0};
 
         bool setDateTime;
         bool setScheduler;
@@ -46,7 +52,7 @@ class MenuActionSetDateTime: public MenuActionBase{
 
         void initSetDateTime();
         void initSetScheduler();
-        void getSettedDateTime(int &year, byte &month, byte &day, byte &hour, byte &minute);
+        void getSettedDateTime(MenuDateTime *dt);
         void getSettedTime(byte* hour, byte* minute);
 };
 

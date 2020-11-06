@@ -1,3 +1,6 @@
+#define DEBUG
+#include "headers\SerialDebug.h"
+
 #include "headers\MenuActionBase.h"
 #include "headers\MenuActionSetDateTime.h"
 #include "headers\Lcd.h"
@@ -37,14 +40,12 @@ void MenuActionSetDateTime::reset(byte tag)
 
     this->tag = tag;
 
-    year = 2020;
-    month = 1;
-    day = 1;
-
-    hour = 0;
-    minute = 0;
-
-    duration = 5;
+    this->datetime.year = 2020;
+    this->datetime.month = 1;
+    this->datetime.day = 1;
+    this->datetime.hour = 0;
+    this->datetime.minute = 0;
+    this->datetime.duration = 5;    
 
     lcd->writeLn(1, 0, "                \0");
     blinkOn = false;
@@ -85,7 +86,7 @@ void MenuActionSetDateTime::keyEnter()
         currentStatus = DATETIMESETTING_YEAR;
         if (onActioncComplete != NULL)
         {
-            onActioncComplete(NULL, callerCallbackInstance, tag);
+            onActioncComplete(callerCallbackInstance, tag);
         }
         break;
     default:
@@ -98,36 +99,36 @@ void MenuActionSetDateTime::keyUp()
     switch (currentStatus)
     {
     case DATETIMESETTING_YEAR:
-        year++;
+        (this->datetime.year)++;
         break;
     case DATETIMESETTING_MONTH:
-        if (++month > 12)
+        if (++(this->datetime.month) > 12)
         {
-            month = 1;
+            this->datetime.month = 1;
         }
         break;
     case DATETIMESETTING_DAY:
-        if (++day > 31)
+        if (++(this->datetime.day) > 31)
         {
-            day = 1;
+            this->datetime.day = 1;
         }
         break;
     case DATETIMESETTING_HOUR:
-        if (++hour > 23)
+        if (++(this->datetime.hour) > 23)
         {
-            hour = 00;
+            this->datetime.hour = 00;
         }
         break;
     case DATETIMESETTING_MINUTE:
-        if (++minute > 59)
+        if (++(this->datetime.minute) > 59)
         {
-            minute = 00;
+            this->datetime.minute = 00;
         }
         break;
     case DATETIMESETTING_DURATION:
-        if (++duration > 60)
+        if (++(this->datetime.duration) > 60)
         {
-            duration = 00;
+            this->datetime.duration = 00;
         }
         break;
     }
@@ -138,40 +139,40 @@ void MenuActionSetDateTime::keyDown()
     switch (currentStatus)
     {
     case DATETIMESETTING_YEAR:
-        year--;
+        this->datetime.year--;
         break;
     case DATETIMESETTING_MONTH:
-        if (--month < 1)
+        if (--(this->datetime.month) < 1)
         {
-            month = 12;
+            this->datetime.month = 12;
         }
         break;
     case DATETIMESETTING_DAY:
-        if (--day < 1)
+        if (--(this->datetime.day) < 1)
         {
-            day = 31;
+            this->datetime.day = 31;
         }
         break;
     case DATETIMESETTING_HOUR:
-        if (hour == 00)
+        if (this->datetime.hour == 00)
         {
-            hour = 24;
+            this->datetime.hour = 24;
         }
-        hour--;
+        this->datetime.hour--;
         break;
     case DATETIMESETTING_MINUTE:
-        if (minute == 00)
+        if (this->datetime.minute == 00)
         {
-            minute = 60;
+            this->datetime.minute = 60;
         }
-        minute--;
+        this->datetime.minute--;
         break;
     case DATETIMESETTING_DURATION:
-        if (duration == 00)
+        if (this->datetime.duration == 00)
         {
-            duration = 61;
+            this->datetime.duration = 61;
         }
-        duration--;
+        this->datetime.duration--;
     }
 }
 
@@ -193,7 +194,7 @@ void MenuActionSetDateTime::blink()
     case DATETIMESETTING_YEAR:
         if (blinkOn)
         {
-            sprintf(line, "Year:%d\0", year);
+            sprintf(line, "Year:%d\0", this->datetime.year);
         }
         else
         {
@@ -203,7 +204,7 @@ void MenuActionSetDateTime::blink()
     case DATETIMESETTING_MONTH:
         if (blinkOn)
         {
-            sprintf(line, "Month:%d \0", month);
+            sprintf(line, "Month:%d \0", this->datetime.month);
         }
         else
         {
@@ -213,7 +214,7 @@ void MenuActionSetDateTime::blink()
     case DATETIMESETTING_DAY:
         if (blinkOn)
         {
-            sprintf(line, "Day:%d  \0", day);
+            sprintf(line, "Day:%d  \0", this->datetime.day);
         }
         else
         {
@@ -223,7 +224,7 @@ void MenuActionSetDateTime::blink()
     case DATETIMESETTING_HOUR:
         if (blinkOn)
         {
-            sprintf(line, "Hour:%d \0", hour);
+            sprintf(line, "Hour:%d \0", this->datetime.hour);
         }
         else
         {
@@ -233,7 +234,7 @@ void MenuActionSetDateTime::blink()
     case DATETIMESETTING_MINUTE:
         if (blinkOn)
         {
-            sprintf(line, "Minute:%d\0", minute);
+            sprintf(line, "Minute:%d\0", this->datetime.minute);
         }
         else
         {
@@ -243,7 +244,7 @@ void MenuActionSetDateTime::blink()
     case DATETIMESETTING_DURATION:
         if (blinkOn)
         {
-            sprintf(line, "Duration:%d\0", duration);
+            sprintf(line, "Duration:%d\0", this->datetime.duration);
         }
         else
         {
@@ -257,11 +258,7 @@ void MenuActionSetDateTime::blink()
     lcd->writeLn(1, 0, line);
 }
 
-void MenuActionSetDateTime::getSettedDateTime(int &year, byte &month, byte &day, byte &hour, byte &minute)
+void MenuActionSetDateTime::getSettedDateTime(MenuDateTime *dt)
 {
-    year = this->year;
-    month=this->month;
-    day=this->day;
-    hour=this->hour;
-    minute=this->minute;
+    memcpy(dt, &datetime,sizeof(MenuDateTime));
 }

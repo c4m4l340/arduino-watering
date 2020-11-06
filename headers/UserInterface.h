@@ -13,6 +13,7 @@
 #define USER_INTERFACE_EXEC_ACTION 3
 
 enum menuTag:byte { setDateTime, setScheduler1, setScheduler2, setScheduler3, setScheduler4};
+using SetClockCallback = void (*)(MenuDateTime* datetime, void* caller_ptr);
 
 class UserInterface{
     private:
@@ -42,13 +43,14 @@ class UserInterface{
         static void execMenuActionSetScheduler3(void* caller_ptr, byte index);
         static void execMenuActionSetScheduler4(void* caller_ptr, byte index);
 
-        static void onActionComplete (void* data, void* caller_ptr, byte tag);
+        static void onActionComplete (void* caller_ptr, byte tag);
         static void onActionCanceled (void* caller_ptr, byte tag);
 
         WaterProgram* wprogram;
        
         MenuActionBase* currentMenuAction;
         MenuActionSetDateTime* menuActionSetDateTime = new MenuActionSetDateTime;
+        MenuDateTime menuDateTime = {0,0,0,0,0,0};
 
         void showIdleScreen(byte hours, byte minutes, byte seconds);
         void showMenuScreen(MenuItem* item);
@@ -62,6 +64,10 @@ class UserInterface{
         void update();
 
         void pushTime(byte hours, byte minutes, byte seconds);
+        
+        SetClockCallback onSetClock = NULL;
+        void* callerCallbackInstance = NULL;
+
 };
 
 #endif
