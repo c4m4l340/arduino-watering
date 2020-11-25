@@ -262,3 +262,9 @@ void MenuActionSetDateTime::getSettedDateTime(MenuDateTime *dt)
 {
     memcpy(dt, &datetime,sizeof(MenuDateTime));
 }
+
+void MenuActionSetDateTime::getSettedScheduler(byte& hour, byte& minute, byte& duration){
+     hour = this->datetime.hour;
+     minute = this->datetime.minute;
+     duration = this->datetime.duration;
+}

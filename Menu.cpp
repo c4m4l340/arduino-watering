@@ -16,9 +16,9 @@ void Menu::begin(){
 void Menu::update(){
 	if(millis()-lastUpdateTime > 1000){
 		lastUpdateTime = millis();
-		 DPRINTLN_F("Menu::update(currentItem:%p, count:%d, childs:%d, isRoot:%d, action:%p, call_ptr:%p)", 
-		 currentItem, currentLevelItemsCount, currentItem->hasChildren(), 
-		 isCurrentItemRoot(), currentItem->callback, this->callerCallbackInstance);
+		 //DPRINTLN_F("Menu::update(currentItem:%p, count:%d, childs:%d, isRoot:%d, action:%p, call_ptr:%p)", 
+		 //currentItem, currentLevelItemsCount, currentItem->hasChildren(), 
+		 //isCurrentItemRoot(), currentItem->callback, this->callerCallbackInstance);
 	}
 }
 

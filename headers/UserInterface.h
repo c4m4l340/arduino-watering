@@ -6,6 +6,7 @@
 #include "WaterProgram.h"
 #include "Menu.h"
 #include "MenuActionSetDateTime.h"
+#include "Scheduler.h"
 
 #define USER_INTERFACE_STATUS_OFF 0
 #define USER_INTERFACE_STATUS_STANDBY 1
@@ -57,6 +58,11 @@ class UserInterface{
         void processMenu(Keys pressedKey);
         void processAction(Keys pressedKey);
         void setMenuCallbacks();
+
+        Scheduler* scheduler1;
+        Scheduler* scheduler2;
+        Scheduler* scheduler3;
+        Scheduler* scheduler4;
 
     public:
         UserInterface(Lcd* lcd, Keypad* keypad, Menu* menu, WaterProgram* wprogram);

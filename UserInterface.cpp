@@ -155,15 +155,41 @@ void UserInterface::onLcdWakeup(void *caller_ptr)
 
 void UserInterface::onActionComplete(void *caller_ptr, byte tag)
 {
+    Scheduler* sch = nullptr;
+
     UserInterface *me = static_cast<UserInterface *>(caller_ptr);
     switch (tag)
     {
-    case menuTag::setDateTime:
-        me->menuActionSetDateTime->getSettedDateTime(&(me->menuDateTime));
-        if(me->onSetClock != NULL){
-            me->onSetClock(&(me->menuDateTime), me->callerCallbackInstance);
-        }
+        case menuTag::setDateTime:
+            me->menuActionSetDateTime->getSettedDateTime(&(me->menuDateTime));
+            if(me->onSetClock != NULL){
+                me->onSetClock(&(me->menuDateTime), me->callerCallbackInstance);
+            }
         break;
+        case menuTag::setScheduler1:
+            sch = me->scheduler1;
+            break;
+        case menuTag::setScheduler2:
+            sch = me->scheduler2;
+            break;
+        case menuTag::setScheduler3:
+            sch = me->scheduler3;
+            break;
+        case menuTag::setScheduler4:
+            sch = me->scheduler4;
+            break;
+        break;
+    }
+
+    if(sch != nullptr)
+    {
+        byte hour;
+        byte minute;
+        byte duration;
+        me->menuActionSetDateTime->getSettedScheduler(hour, minute, duration);
+        sch->hour = hour;
+        sch->minute = minute;
+        sch->duration = duration;
     }
     me->currentStatus = USER_INTERFACE_STATUS_STANDBY;
 }
@@ -319,7 +345,5 @@ void UserInterface::processAction(Keys pressedKey)
 void UserInterface::setMenuCallbacks()
 {
    
-
-
 }
 #pragma endregion

@@ -53,7 +53,7 @@ class MenuActionSetDateTime: public MenuActionBase{
         void initSetDateTime();
         void initSetScheduler();
         void getSettedDateTime(MenuDateTime *dt);
-        void getSettedTime(byte* hour, byte* minute);
+        void getSettedScheduler(byte& hour, byte& minute, byte& duration);
 };
 
 #endif
